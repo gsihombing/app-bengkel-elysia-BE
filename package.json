@@ -8,7 +8,8 @@
   "dependencies": {
     "elysia": "latest",
     "logestic": "^1.2.4",
-    "pg": "^8.13.1"
+    "pg": "^8.13.1",
+    "preact": "^10.24.3"
   },
   "devDependencies": {
     "bun-types": "latest"

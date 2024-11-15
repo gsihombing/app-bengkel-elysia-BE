@@ -8,7 +8,7 @@ const routerIndex = new Elysia();
 routerIndex.group("/global", (allRouter) => allRouter.use(routerBooks))
 
 // Admin Router
-// routerIndex.group("/admin", (allRouter) => allRouter.use(routerIndex))dawda
+// routerIndex.group("/admin", (allRouter) => allRouter.use(routerIndex))
 
 // User Router
 // routerIndex.group("/user", (allRouter) => allRouter.use(routerIndex))
