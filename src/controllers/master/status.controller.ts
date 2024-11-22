@@ -14,3 +14,16 @@ export async function GetAllStatus() {
         return outError(error);
     }
 }
+
+export async function CreateStatus(data: { name: string }) {
+    try {
+        // const data: GetAllStatus = await StatusAll();
+        return {
+            success: true,
+            message: "Success get all status",
+            results: data
+        };
+    } catch (error) {
+        return outError(error);
+    }
+}

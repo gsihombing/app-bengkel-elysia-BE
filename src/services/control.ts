@@ -4,7 +4,6 @@
 // Type
 type Sql = string
 type ErrorResponse = unknown
-type GetAllData = []
 
 
 // interface
