@@ -1,14 +1,14 @@
 import { Elysia } from "elysia";
-import routerBooks from "./global/books.router";
+import routerMaster from "./master/status.router";
 
 
 const routerIndex = new Elysia();
 
-// Global Router
-routerIndex.group("/global", (allRouter) => allRouter.use(routerBooks))
+// Master Admin Router
+routerIndex.group("/master", (allRouter) => allRouter.use(routerMaster))
 
 // Admin Router
-// routerIndex.group("/admin", (allRouter) => allRouter.use(routerIndex))dawda
+// routerIndex.group("/admin", (allRouter) => allRouter.use(routerIndex))
 
 // User Router
 // routerIndex.group("/user", (allRouter) => allRouter.use(routerIndex))
