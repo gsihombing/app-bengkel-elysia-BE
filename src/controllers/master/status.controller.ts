@@ -15,12 +15,12 @@ export async function GetAllStatus() {
     }
 }
 
-export async function CreateStatus(data: { name: string }) {
+export async function CreateStatus(data: StatusCreate) {
     try {
         // const data: GetAllStatus = await StatusAll();
         return {
             success: true,
-            message: "Success get all status",
+            message: "Success create status",
             results: data
         };
     } catch (error) {

@@ -4,6 +4,7 @@
 // Type
 type Sql = string
 type ErrorResponse = unknown
+type StatusCreate = { name: string }
 
 
 // interface
