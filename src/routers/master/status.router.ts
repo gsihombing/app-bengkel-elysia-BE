@@ -5,7 +5,7 @@ import { GetAllStatus, CreateStatus } from "../../controllers/master/status.cont
 const routerStatus = new Elysia({prefix: "/status"});
 
 routerStatus.get("/", () => GetAllStatus());
-routerStatus.post("/", ({ body }) => {CreateStatus(body as StatusCreate)}, {
+routerStatus.post("/", ({ body }) => CreateStatus(body as StatusCreate), {
     body: t.Object({
         name: t.String({
             type: "string",
