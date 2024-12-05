@@ -8,7 +8,7 @@ type StatusCreate = { name: string }
 
 
 // interface
-interface GetAllStatus {
+interface Status {
     id: number,
     name: string,
     createdAt: string,

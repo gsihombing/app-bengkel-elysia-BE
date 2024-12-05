@@ -1,10 +1,10 @@
 import { outError } from "../../helpers/utils";
-import { StatusAll } from "../../models/master/status.models";
+import { StatusAll, StatusCreate } from "../../models/master/status.models";
 
 
 export async function GetAllStatus() {
     try {
-        const data: GetAllStatus = await StatusAll();
+        const data: Status = await StatusAll();
         return {
             success: true,
             message: "Success get all status",
@@ -17,11 +17,11 @@ export async function GetAllStatus() {
 
 export async function CreateStatus(StatusData: StatusCreate) {
     try {
-        // const data: GetAllStatus = await StatusAll();
+        const dataCreate: Status = await StatusCreate(StatusData);
         return {
             success: true,
             message: "Success create status",
-            results: StatusData
+            results: dataCreate
         };
     } catch (error) {
         return outError(error);
