@@ -4,6 +4,7 @@
 // Type
 type Sql = string
 type ErrorResponse = unknown
+type TypeId = unknown
 type StatusCreate = { name: string }
 
 

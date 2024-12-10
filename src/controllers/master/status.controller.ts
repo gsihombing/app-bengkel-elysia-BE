@@ -1,5 +1,5 @@
 import { outError } from "../../helpers/utils";
-import { StatusAll, StatusCreate } from "../../models/master/status.models";
+import { StatusAll, StatusCreate, StatusUpdate } from "../../models/master/status.models";
 
 
 export async function GetAllStatus() {
@@ -22,6 +22,19 @@ export async function CreateStatus(StatusData: StatusCreate) {
             success: true,
             message: "Success create status",
             results: dataCreate
+        };
+    } catch (error) {
+        return outError(error);
+    }
+}
+
+export async function UpdateStatus(id: TypeId, StatusData: StatusCreate) {
+    try {
+        const dataUpdate: Status = await StatusUpdate(id, StatusData);
+        return {
+            success: true,
+            message: "Success update status",
+            results: dataUpdate
         };
     } catch (error) {
         return outError(error);
