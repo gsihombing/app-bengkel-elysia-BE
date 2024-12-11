@@ -4,11 +4,11 @@ import { StatusAll, StatusCreate, StatusUpdate, StatusDelete } from "../../model
 
 export async function GetAllStatus() {
     try {
-        const data: Status = await StatusAll();
+        const dataAll: Status = await StatusAll();
         return {
             success: true,
             message: "Success get all status",
-            results: data
+            results: dataAll
         };
     } catch (error: ErrorResponse) {
         return outError(error);
