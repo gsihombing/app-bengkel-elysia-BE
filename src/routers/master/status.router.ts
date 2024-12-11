@@ -1,5 +1,5 @@
 import { Elysia, t } from "elysia";
-import { GetAllStatus, CreateStatus, UpdateStatus } from "../../controllers/master/status.controller";
+import { GetAllStatus, CreateStatus, UpdateStatus, DeleteStatus } from "../../controllers/master/status.controller";
 
 
 const routerStatus = new Elysia({prefix: "/status"});
@@ -21,5 +21,6 @@ routerStatus.patch("/:id", ({ params: { id }, body }) => UpdateStatus(id as Type
         })
     })
 });
+routerStatus.delete("/:id", ({ params: { id } }) => DeleteStatus(id as TypeId));
 
 export default routerStatus;

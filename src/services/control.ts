@@ -2,8 +2,8 @@
 
 
 // Type
-type Sql = string
-type ErrorResponse = unknown
+type Query = string
+type ErrorResponse = any
 type TypeId = unknown
 type StatusCreate = { name: string }
 

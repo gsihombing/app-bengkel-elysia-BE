@@ -1,5 +1,5 @@
 import { outError } from "../../helpers/utils";
-import { StatusAll, StatusCreate, StatusUpdate } from "../../models/master/status.models";
+import { StatusAll, StatusCreate, StatusUpdate, StatusDelete } from "../../models/master/status.models";
 
 
 export async function GetAllStatus() {
@@ -10,7 +10,7 @@ export async function GetAllStatus() {
             message: "Success get all status",
             results: data
         };
-    } catch (error) {
+    } catch (error: ErrorResponse) {
         return outError(error);
     }
 }
@@ -23,7 +23,7 @@ export async function CreateStatus(StatusData: StatusCreate) {
             message: "Success create status",
             results: dataCreate
         };
-    } catch (error) {
+    } catch (error: ErrorResponse) {
         return outError(error);
     }
 }
@@ -36,7 +36,23 @@ export async function UpdateStatus(id: TypeId, StatusData: StatusCreate) {
             message: "Success update status",
             results: dataUpdate
         };
-    } catch (error) {
+    } catch (error: ErrorResponse) {
+        return outError(error);
+    }
+}
+
+export async function DeleteStatus(id: TypeId) {
+    try {
+        const dataDelete: any = await StatusDelete(id);
+        if (dataDelete.length === 0) {
+            throw ({code: "THROW", message: "Status not found"});
+        }
+        return {
+            success: true,
+            message: "Success delete status",
+            results: dataDelete
+        };
+    } catch (error: ErrorResponse) {
         return outError(error);
     }
 }
