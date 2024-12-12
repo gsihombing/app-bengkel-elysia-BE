@@ -4,14 +4,29 @@ import db from "../../lib/db.lib";
 export async function StatusAll() {
 const sql: Query = `
     SELECT * 
-    FROM status
+    FROM "status"
     ORDER BY "id" ASC`;
     const { rows } = await db.query(sql);
     return rows;
 }
 
+
+export async function StatusCheck(data: StatusCreate) {
+    const sql: Query = `
+    SELECT * 
+    FROM "status" 
+    WHERE "name" ILIKE $1`;
+    const values = [data.name];
+    const { rows } = await db.query(sql, values);
+    return rows;
+}
+
 export async function StatusCreate(data: StatusCreate) {
-const sql: Query = `INSERT INTO status ("name") VALUES ($1) RETURNING *`;
+const sql: Query = `
+    INSERT INTO "status" 
+    ("name") 
+    VALUES ($1) 
+    RETURNING *`;
     const values = [data.name];
     const { rows } = await db.query(sql, values);
     return rows;
