@@ -12,14 +12,14 @@ routerMember.post("/", ({ body }) => CreateMember(body as MemberCreate), {
         })
     })
 });
-// routerMember.patch("/:id", ({ params: { id }, body }) => UpdateMember(id as TypeId, body as MemberCreate), {
-//     body: t.Object({
-//         name: t.String({
-//             type: "string",
-//             required: true
-//         })
-//     })
-// });
-// routerMember.delete("/:id", ({ params: { id } }) => DeleteMember(id as TypeId));
+routerMember.patch("/:id", ({ params: { id }, body }) => UpdateMember(id as TypeId, body as MemberCreate), {
+    body: t.Object({
+        name: t.String({
+            type: "string",
+            required: true
+        })
+    })
+});
+routerMember.delete("/:id", ({ params: { id } }) => DeleteMember(id as TypeId));
 
 export default routerMember;

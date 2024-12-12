@@ -1,5 +1,5 @@
 import { outError } from "../../helpers/utils";
-import { MemberAll, MemberCreate } from "../../models/master/member.model";
+import { MemberAll, MemberCreate, MemberUpdate, MemberDelete } from "../../models/master/member.model";
 
 export async function GetAllMember() {
     try {
@@ -21,6 +21,35 @@ export async function CreateMember(MemberData: MemberCreate) {
             success: true,
             message: "Success create member",
             results: dataCreate
+        };
+    } catch (error: ErrorResponse) {
+        return outError(error);
+    }
+}
+
+export async function UpdateMember(id: TypeId, MemberData: MemberCreate) {
+    try {
+        const dataUpdate: Member = await MemberUpdate(id, MemberData);
+        return {
+            success: true,
+            message: "Success update member",
+            results: dataUpdate
+        };
+    } catch (error: ErrorResponse) {
+        return outError(error);
+    }
+}
+
+export async function DeleteMember(id: TypeId) {
+    try {
+        const dataDelete: any = await MemberDelete(id);
+        if (dataDelete.length === 0) {
+            throw ({code: "THROW", message: "Member not found"});
+        }
+        return {
+            success: true,
+            message: "Success delete member",
+            results: dataDelete
         };
     } catch (error: ErrorResponse) {
         return outError(error);
