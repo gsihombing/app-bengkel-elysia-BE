@@ -2,13 +2,22 @@
 
 
 // Type
-type Sql = string
-type ErrorResponse = unknown
+type Query = string
+type ErrorResponse = any
+type TypeId = unknown
 type StatusCreate = { name: string }
+type MemberCreate = { name: string }
 
 
 // interface
-interface GetAllStatus {
+interface Status {
+    id: number,
+    name: string,
+    createdAt: string,
+    updatedAt: string
+}
+
+interface Member {
     id: number,
     name: string,
     createdAt: string,

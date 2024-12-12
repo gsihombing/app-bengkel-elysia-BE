@@ -1,6 +1,10 @@
 export const outError = (err: ErrorResponse) => {
-    console.log(err);
-    if (err) {
+    if (err.code === "THROW") {
+        return {
+            success: false,
+            message: err.message
+        }
+    } else if (err) {
         return {
             success: false,
             message: "Error: " + err
