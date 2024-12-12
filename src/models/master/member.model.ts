@@ -10,6 +10,16 @@ export async function MemberAll() {
     return rows;
 }
 
+export async function MemberCheck(data: MemberCreate) {
+    const sql: Query = `
+    SELECT * 
+    FROM member 
+    WHERE "name" ILIKE $1`;
+    const values = [data.name];
+    const { rows } = await db.query(sql, values);
+    return rows;
+}
+
 export async function MemberCreate(data: MemberCreate) {
     const sql: Query = `
     INSERT INTO member ("name") 

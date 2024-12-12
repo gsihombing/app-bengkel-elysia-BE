@@ -1,5 +1,5 @@
 import { outError } from "../../helpers/utils";
-import { StatusAll, StatusCreate, StatusUpdate, StatusDelete } from "../../models/master/status.models";
+import { StatusAll, StatusCreate, StatusUpdate, StatusDelete, StatusCheck } from "../../models/master/status.models";
 
 
 export async function GetAllStatus() {
@@ -17,6 +17,10 @@ export async function GetAllStatus() {
 
 export async function CreateStatus(StatusData: StatusCreate) {
     try {
+        const checkStatus: any = await StatusCheck(StatusData);
+        if (checkStatus[0]) {
+            throw ({code: "THROW", message: "Status already exist"});
+        }
         const dataCreate: Status = await StatusCreate(StatusData);
         return {
             success: true,

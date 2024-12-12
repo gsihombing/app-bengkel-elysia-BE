@@ -1,5 +1,5 @@
 import { outError } from "../../helpers/utils";
-import { MemberAll, MemberCreate, MemberUpdate, MemberDelete } from "../../models/master/member.model";
+import { MemberAll, MemberCreate, MemberUpdate, MemberDelete, MemberCheck } from "../../models/master/member.model";
 
 export async function GetAllMember() {
     try {
@@ -16,6 +16,10 @@ export async function GetAllMember() {
 
 export async function CreateMember(MemberData: MemberCreate) {
     try {
+        const checkMember: any = await MemberCheck(MemberData);
+        if (checkMember[0]) {
+            throw ({code: "THROW", message: "Member already exist"});
+        }
         const dataCreate: Member = await MemberCreate(MemberData);
         return {
             success: true,
