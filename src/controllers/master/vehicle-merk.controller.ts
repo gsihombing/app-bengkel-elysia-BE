@@ -4,7 +4,7 @@ import { VehicleMerkAll, VehicleMerkCheck, VehicleMerkCreate, VehicleMerkUpdate,
 
 export async function GetAllVehicleMerk() {
     try {
-        const dataAll: any = await VehicleMerkAll();
+        const dataAll: VehicleMerk = await VehicleMerkAll();
         return {
             success: true,
             message: "Success get all vehicle merk",
@@ -21,7 +21,7 @@ export async function CreateVehicleMerk(data: any) {
         if (checkVehicleMerk[0]) {
             throw ({code: "THROW", message: "Vehicle merk already exist"});
         }
-        const dataCreate: any = await VehicleMerkCreate(data);
+        const dataCreate: VehicleMerk = await VehicleMerkCreate(data);
         return {
             success: true,
             message: "Success create vehicle merk",
@@ -34,7 +34,7 @@ export async function CreateVehicleMerk(data: any) {
 
 export async function UpdateVehicleMerk(id: any, data: any) {
     try {
-        const dataUpdate: any = await VehicleMerkUpdate(id, data);
+        const dataUpdate: VehicleMerk = await VehicleMerkUpdate(id, data);
         return {
             success: true,
             message: "Success update vehicle merk",

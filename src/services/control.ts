@@ -32,3 +32,10 @@ interface VehicleYear {
     createdAt: string,
     updatedAt: string
 }
+
+interface VehicleMerk {
+    id: number,
+    name: string,
+    createdAt: string,
+    updatedAt: string
+}
