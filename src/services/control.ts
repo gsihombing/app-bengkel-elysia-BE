@@ -8,6 +8,7 @@ type TypeId = unknown
 type StatusCreate = { name: string }
 type MemberCreate = { name: string }
 type VehicleYearCreate = { year: string }
+type VehicleMerkCreate = { name: string }
 
 
 // interface
