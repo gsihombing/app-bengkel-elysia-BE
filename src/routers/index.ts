@@ -2,6 +2,7 @@ import { Elysia } from "elysia";
 import routerMasterStatus from "./master/status.router";
 import routerMasterMember from "./master/member.router";
 import routerVehicleYear from "./master/vehicle-year.router";
+import routerVehicleMerk from "./master/vehicle-merk.router";
 
 
 const routerIndex = new Elysia();
@@ -10,6 +11,7 @@ const routerIndex = new Elysia();
 routerIndex.group("/master", (allRouter) => allRouter.use(routerMasterStatus))
 routerIndex.group("/master", (allRouter) => allRouter.use(routerMasterMember))
 routerIndex.group("/master", (allRouter) => allRouter.use(routerVehicleYear))
+routerIndex.group("/master", (allRouter) => allRouter.use(routerVehicleMerk))
 
 // Admin Router
 // routerIndex.group("/admin", (allRouter) => allRouter.use(routerIndex))
