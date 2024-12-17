@@ -18,7 +18,7 @@ export async function StatusCheck(data: StatusCreate) {
     WHERE "name" ILIKE $1`;
     const values = [data.name];
     const { rows } = await db.query(sql, values);
-    return rows;
+    return rows[0];
 }
 
 export async function StatusCreate(data: StatusCreate) {
@@ -34,7 +34,7 @@ const sql: Query = `
 
 export async function StatusUpdate(id: TypeId, data: StatusCreate) {
 const sql: Query = `
-    UPDATE status 
+    UPDATE "status" 
     SET "name" = $1, "updatedAt"=now() 
     WHERE id = $2 
     RETURNING *`;
@@ -44,8 +44,8 @@ const sql: Query = `
 }
 
 export async function StatusDelete(id: TypeId) {
-const sql: Query = `DELETE FROM status WHERE id = $1 RETURNING *`;
+const sql: Query = `DELETE FROM "status" WHERE id = $1 RETURNING *`;
     const values = [id];
     const { rows } = await db.query(sql, values);
-    return rows;
+    return rows[0];
 }

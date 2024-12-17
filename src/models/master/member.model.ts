@@ -4,7 +4,7 @@ import db from "../../lib/db.lib";
 export async function MemberAll() {
     const sql: Query = `
     SELECT * 
-    FROM member
+    FROM "member"
     ORDER BY "id" ASC`;
     const { rows } = await db.query(sql);
     return rows;
@@ -13,16 +13,16 @@ export async function MemberAll() {
 export async function MemberCheck(data: MemberCreate) {
     const sql: Query = `
     SELECT * 
-    FROM member 
+    FROM "member" 
     WHERE "name" ILIKE $1`;
     const values = [data.name];
     const { rows } = await db.query(sql, values);
-    return rows;
+    return rows[0];
 }
 
 export async function MemberCreate(data: MemberCreate) {
     const sql: Query = `
-    INSERT INTO member ("name") 
+    INSERT INTO "member" ("name") 
     VALUES ($1) 
     RETURNING *`;
     const values = [data.name];
@@ -32,7 +32,7 @@ export async function MemberCreate(data: MemberCreate) {
 
 export async function MemberUpdate(id: TypeId, data: MemberCreate) {
     const sql: Query = `
-    UPDATE member 
+    UPDATE "member" 
     SET "name" = $1, "updatedAt"=now() 
     WHERE id = $2 
     RETURNING *`;
@@ -42,8 +42,8 @@ export async function MemberUpdate(id: TypeId, data: MemberCreate) {
 }
 
 export async function MemberDelete(id: TypeId) {
-    const sql: Query = `DELETE FROM member WHERE id = $1 RETURNING *`;
+    const sql: Query = `DELETE FROM "member" WHERE id = $1 RETURNING *`;
     const values = [id];
     const { rows } = await db.query(sql, values);
-    return rows;
+    return rows[0];
 }

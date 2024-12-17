@@ -18,7 +18,7 @@ export async function GetAllVehicleYear() {
 export async function CreateVehicleYear(data: VehicleYearCreate) {
     try {
         const checkVehicleYear: any = await VehicleYearCheck(data);
-        if (checkVehicleYear[0]) {
+        if (!checkVehicleYear) {
             throw ({code: "THROW", message: "Vehicle year already exist"});
         }
         const dataCreate: VehicleYear = await VehicleYearCreate(data);
@@ -48,7 +48,7 @@ export async function UpdateVehicleYear(id: TypeId, data: VehicleYearCreate) {
 export async function DeleteVehicleYear(id: TypeId) {
     try {
         const dataDelete: any = await VehicleYearDelete(id);
-        if (dataDelete.length === 0) {
+        if (!dataDelete) {
             throw ({code: "THROW", message: "Vehicle year not found"});
         }
         return {

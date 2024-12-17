@@ -17,7 +17,7 @@ export async function GetAllMember() {
 export async function CreateMember(MemberData: MemberCreate) {
     try {
         const checkMember: any = await MemberCheck(MemberData);
-        if (checkMember[0]) {
+        if (!checkMember) {
             throw ({code: "THROW", message: "Member already exist"});
         }
         const dataCreate: Member = await MemberCreate(MemberData);
@@ -47,7 +47,7 @@ export async function UpdateMember(id: TypeId, MemberData: MemberCreate) {
 export async function DeleteMember(id: TypeId) {
     try {
         const dataDelete: any = await MemberDelete(id);
-        if (dataDelete.length === 0) {
+        if (!dataDelete) {
             throw ({code: "THROW", message: "Member not found"});
         }
         return {
