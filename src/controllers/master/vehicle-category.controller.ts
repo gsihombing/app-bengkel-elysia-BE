@@ -19,7 +19,7 @@ export async function GetAllVehicleCategory() {
 export async function CreateVehicleCategory(data: any) {
     try {
         const checkVehicleCategory: any = await VehicleCategoryCheck(data);
-        if (checkVehicleCategory[0]) {
+        if (!checkVehicleCategory) {
             throw ({code: "THROW", message: "Vehicle category already exist"});
         }
         const dataCreate: VehicleCategory = await VehicleCategoryCreate(data);
@@ -49,7 +49,7 @@ export async function UpdateVehicleCategory(id: any, data: any) {
 export async function DeleteVehicleCategory(id: any) {
     try {
         const dataDelete: any = await VehicleCategoryDelete(id);
-        if (dataDelete.length === 0) {
+        if (!dataDelete) {
             throw ({code: "THROW", message: "Vehicle category not found"});
         }
         return {

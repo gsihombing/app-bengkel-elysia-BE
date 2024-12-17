@@ -1,4 +1,4 @@
-import { Elysia, t } from "elysia";
+import { Elysia, error, t } from "elysia";
 import { GetAllVehicleType, CreateVehicleType, UpdateVehicleType, DeleteVehicleType } from "../../controllers/master/vehicle-type.controller";
 
 
@@ -17,14 +17,18 @@ routerVehicleType.post("/", ({ body }) => CreateVehicleType(body as VehicleTypeC
         })
     })
 });
-// routerVehicleType.patch("/:id", ({ params: { id }, body }) => UpdateVehicleType(id as TypeId, body as VehicleTypeCreate), {
-//     body: t.Object({
-//         name: t.String({
-//             type: "string",
-//             required: true
-//         })
-//     })
-// });
-// routerVehicleType.delete("/:id", ({ params: { id } }) => DeleteVehicleType(id as TypeId));
+routerVehicleType.patch("/:id", ({ params: { id }, body }) => UpdateVehicleType(id as TypeId, body as VehicleTypeCreate), {
+    body: t.Object({
+        vehicle_category_id: t.Numeric({
+            type: "number",
+            required: true
+        }),
+        name: t.String({
+            type: "string",
+            required: true
+        })
+    })
+});
+routerVehicleType.delete("/:id", ({ params: { id } }) => DeleteVehicleType(id as TypeId));
 
 export default routerVehicleType;

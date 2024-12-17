@@ -52,6 +52,14 @@ interface VehicleCategory {
     updatedAt: string
 }
 
+interface VehicleAllType {
+    id: number,
+    name: string,
+    metadata: object,
+    createdAt: string,
+    updatedAt: string
+}
+
 interface VehicleType {
     id: number,
     vehicle_category_id: number,

@@ -10,6 +10,16 @@ export async function VehicleCategoryAll() {
     return rows;
 }
 
+export async function VehicleCategoryById(id: TypeId) {
+    const sql: Query = `
+    SELECT * 
+    FROM "vehicle_category"
+    WHERE "id" = $1`;
+    const values = [id];
+    const { rows } = await db.query(sql, values);
+    return rows[0];
+}
+
 export async function VehicleCategoryCheck(data: VehicleCategoryCreate) {
     const sql: Query = `
     SELECT * 
@@ -17,7 +27,7 @@ export async function VehicleCategoryCheck(data: VehicleCategoryCreate) {
     WHERE "name" ILIKE $1`;
     const values = [data.name];
     const { rows } = await db.query(sql, values);
-    return rows;
+    return rows[0];
 }
 
 export async function VehicleCategoryCreate(data: VehicleCategoryCreate) {
@@ -46,5 +56,5 @@ export async function VehicleCategoryDelete(id: TypeId) {
     const sql: Query = `DELETE FROM "vehicle_category" WHERE id = $1 RETURNING *`;
     const values = [id];
     const { rows } = await db.query(sql, values);
-    return rows;
+    return rows[0];
 }
