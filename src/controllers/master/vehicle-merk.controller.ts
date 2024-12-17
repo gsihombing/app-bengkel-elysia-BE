@@ -18,7 +18,7 @@ export async function GetAllVehicleMerk() {
 export async function CreateVehicleMerk(data: any) {
     try {
         const checkVehicleMerk: any = await VehicleMerkCheck(data);
-        if (checkVehicleMerk[0]) {
+        if (!checkVehicleMerk) {
             throw ({code: "THROW", message: "Vehicle merk already exist"});
         }
         const dataCreate: VehicleMerk = await VehicleMerkCreate(data);
@@ -48,7 +48,7 @@ export async function UpdateVehicleMerk(id: any, data: any) {
 export async function DeleteVehicleMerk(id: any) {
     try {
         const dataDelete: any = await VehicleMerkDelete(id);
-        if (dataDelete.length === 0) {
+        if (!dataDelete) {
             throw ({code: "THROW", message: "Vehicle merk not found"});
         }
         return {

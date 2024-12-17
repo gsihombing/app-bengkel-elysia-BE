@@ -17,7 +17,7 @@ export async function VehicleMerkCheck(data: VehicleMerkCreate) {
     WHERE "name" ILIKE $1`;
     const values = [data.name];
     const { rows } = await db.query(sql, values);
-    return rows;
+    return rows[0];
 }
 
 export async function VehicleMerkCreate(data: VehicleMerkCreate) {
@@ -46,5 +46,5 @@ export async function VehicleMerkDelete(id: TypeId) {
     const sql: Query = `DELETE FROM "vehicle_merk" WHERE id = $1 RETURNING *`;
     const values = [id];
     const { rows } = await db.query(sql, values);
-    return rows;
+    return rows[0];
 }

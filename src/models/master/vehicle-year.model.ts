@@ -17,7 +17,7 @@ export async function VehicleYearCheck(data: VehicleYearCreate) {
     WHERE "year" = $1`;
     const values = [data.year];
     const { rows } = await db.query(sql, values);
-    return rows;
+    return rows[0];
 }
 
 export async function VehicleYearCreate(data: VehicleYearCreate) {
@@ -45,5 +45,5 @@ export async function VehicleYearDelete(id: TypeId) {
     const sql: Query = `DELETE FROM "vehicle_year" WHERE id = $1 RETURNING *`;
     const values = [id];
     const { rows } = await db.query(sql, values);
-    return rows;
+    return rows[0];
 }

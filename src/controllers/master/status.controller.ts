@@ -18,7 +18,7 @@ export async function GetAllStatus() {
 export async function CreateStatus(StatusData: StatusCreate) {
     try {
         const checkStatus: any = await StatusCheck(StatusData);
-        if (checkStatus[0]) {
+        if (!checkStatus) {
             throw ({code: "THROW", message: "Status already exist"});
         }
         const dataCreate: Status = await StatusCreate(StatusData);
@@ -48,7 +48,7 @@ export async function UpdateStatus(id: TypeId, StatusData: StatusCreate) {
 export async function DeleteStatus(id: TypeId) {
     try {
         const dataDelete: any = await StatusDelete(id);
-        if (dataDelete.length === 0) {
+        if (!dataDelete) {
             throw ({code: "THROW", message: "Status not found"});
         }
         return {
