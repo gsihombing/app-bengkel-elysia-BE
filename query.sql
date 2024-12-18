@@ -89,15 +89,26 @@ CREATE TABLE employee (
     	ON UPDATE CASCADE
 );
 
-CREATE TABLE gerai (
+CREATE TABLE level (
 	"id" serial NOT NULL PRIMARY KEY,
-	"name_gerai" varchar(255) NOT NULL,
-	"username" varchar(50) NOT NULL,
-	"password" varchar(255) NOT NULL,
-	"address_gerai" TEXT NOT NULL,
-	"phone_number_gerai" varchar(16),
+	"name" varchar(15) NOT NULL,
 	"createdAt" timestamp DEFAULT now(),
     "updatedAt" timestamp
+);
+
+CREATE TABLE warehouse (
+	"id" serial NOT NULL PRIMARY KEY,
+	"level_id" int NOT NULL,
+	"name_warehouse" varchar(255) NOT NULL,
+	"username" varchar(50) NOT NULL,
+	"password" varchar(255) NOT NULL,
+	"warehouse_address" TEXT NOT NULL,
+	"phone_number_warehouse" varchar(16),
+	"createdAt" timestamp DEFAULT now(),
+    "updatedAt" timestamp,
+    CONSTRAINT fk_level_warehouse FOREIGN KEY (level_id) REFERENCES level(id)
+    	ON DELETE CASCADE
+    	ON UPDATE CASCADE,
 );
 
 CREATE TABLE mekanik (
@@ -114,17 +125,6 @@ CREATE TABLE mekanik (
     	ON UPDATE CASCADE
 );
 
-CREATE TABLE warehouse (
-	"id" serial NOT NULL PRIMARY KEY,
-	"warehouse_name" varchar(255) NOT NULL,
-	"username" varchar(50) NOT NULL,
-	"password" varchar(255) NOT NULL,
-	"warehouse_address" TEXT NOT NULL,
-	"warehouse_phone_number" varchar(16),
-	"createdAt" timestamp DEFAULT now(),
-    "updatedAt" timestamp
-);
-
 CREATE TABLE barang (
 	"id" serial NOT NULL PRIMARY KEY,
 	"category_vehicle_id" int NOT NULL,
@@ -139,32 +139,17 @@ CREATE TABLE barang (
     	ON UPDATE CASCADE
 );
 
-CREATE TABLE gerai_inventory (
-	"id" serial NOT NULL PRIMARY KEY,
-	"gerai_id" int NOT NULL,
-	"barang_id" int NOT NULL,
-	"qty" int NOT NULL DEFAULT 0,
-	"createdAt" timestamp DEFAULT now(),
-    "updatedAt" timestamp,
-    CONSTRAINT fk_inventory_gerai_gerai FOREIGN KEY (gerai_id) REFERENCES gerai(id)
-    	ON DELETE CASCADE
-    	ON UPDATE CASCADE,
-    CONSTRAINT fk_inventory_gerai_barang FOREIGN KEY (barang_id) REFERENCES barang(id)
-    	ON DELETE CASCADE
-    	ON UPDATE CASCADE
-);
-
-CREATE TABLE inventory_warehouse (
+CREATE TABLE warehouse_inventory (
 	"id" serial NOT NULL PRIMARY KEY,
 	"warehouse_id" int NOT NULL,
 	"barang_id" int NOT NULL,
 	"qty" int NOT NULL DEFAULT 0,
 	"createdAt" timestamp DEFAULT now(),
     "updatedAt" timestamp,
-    CONSTRAINT fk_inventory_warehouse_warehouse FOREIGN KEY (warehouse_id) REFERENCES warehouse(id)
+    CONSTRAINT fk_warehouse_inventory_warehouse FOREIGN KEY (warehouse_id) REFERENCES warehouse(id)
     	ON DELETE CASCADE
     	ON UPDATE CASCADE,
-    CONSTRAINT fk_inventory_warehouse_barang FOREIGN KEY (barang_id) REFERENCES barang(id)
+    CONSTRAINT fk_warehouse_inventory_barang FOREIGN KEY (barang_id) REFERENCES barang(id)
     	ON DELETE CASCADE
     	ON UPDATE CASCADE
 );
@@ -207,14 +192,14 @@ CREATE TABLE transaksi_detail (
 
 CREATE TABLE order_barang (
 	"id" serial NOT NULL PRIMARY KEY,
-	"gerai_id" int NOT NULL,
-	"warehouse_id" int NOT NULL,
+	"from_warehouse_id" int NOT NULL,
+	"to_warehouse_id" int NOT NULL,
 	"createdAt" timestamp DEFAULT now(),
     "updatedAt" timestamp,
-     CONSTRAINT fk_order_barang_gerai FOREIGN KEY (gerai_id) REFERENCES gerai(id)
+     CONSTRAINT fk_order_barang_warehouse FOREIGN KEY (from_warehouse_id) REFERENCES warehouse(id)
     	ON DELETE CASCADE
     	ON UPDATE CASCADE,
-    CONSTRAINT fk_order_barang_warehouse FOREIGN KEY (warehouse_id) REFERENCES warehouse(id)
+    CONSTRAINT fk_order_barang_warehouse FOREIGN KEY (to_warehouse_id) REFERENCES warehouse(id)
     	ON DELETE CASCADE
     	ON UPDATE CASCADE
 );
@@ -233,32 +218,3 @@ CREATE TABLE order_barang_detail (
     	ON DELETE CASCADE
     	ON UPDATE CASCADE
 );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
