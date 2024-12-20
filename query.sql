@@ -108,19 +108,19 @@ CREATE TABLE warehouse (
     "updatedAt" timestamp,
     CONSTRAINT fk_level_warehouse FOREIGN KEY (level_id) REFERENCES level(id)
     	ON DELETE CASCADE
-    	ON UPDATE CASCADE,
+    	ON UPDATE CASCADE
 );
 
 CREATE TABLE mekanik (
 	"id" serial NOT NULL PRIMARY KEY,
 	"employee_id" varchar(255) NOT NULL,
-	"gerai_id" int NOT NULL,
+	"warehouse_id" int NOT NULL,
 	"createdAt" timestamp DEFAULT now(),
     "updatedAt" timestamp,
 	CONSTRAINT fk_mekanik_employee FOREIGN KEY (employee_id) REFERENCES employee(id)
     	ON DELETE CASCADE
     	ON UPDATE CASCADE,
-    CONSTRAINT fk_mekanik_gerai FOREIGN KEY (gerai_id) REFERENCES gerai(id)
+    CONSTRAINT fk_mekanik_warehouse FOREIGN KEY (warehouse_id) REFERENCES warehouse(id)
     	ON DELETE CASCADE
     	ON UPDATE CASCADE
 );
@@ -158,7 +158,7 @@ CREATE TABLE transaksi (
 	"id" serial NOT NULL PRIMARY KEY,
 	"users_id" varchar(255) NOT NULL,
 	"mekanik_id" int NOT NULL,
-	"gerai_id" int NOT NULL,
+	"warehouse_id" int NOT NULL,
 	"point" int NOT NULL DEFAULT 0,
 	"total" int,
 	"createdAt" timestamp DEFAULT now(),
@@ -169,7 +169,7 @@ CREATE TABLE transaksi (
     CONSTRAINT fk_transaksi_mekanik FOREIGN KEY (mekanik_id) REFERENCES mekanik(id)
     	ON DELETE CASCADE
     	ON UPDATE CASCADE,
-    CONSTRAINT fk_transaksi_gerai FOREIGN KEY (gerai_id) REFERENCES gerai(id)
+    CONSTRAINT fk_transaksi_warehouse FOREIGN KEY (warehouse_id) REFERENCES warehouse(id)
     	ON DELETE CASCADE
     	ON UPDATE CASCADE
 );
@@ -196,10 +196,10 @@ CREATE TABLE order_barang (
 	"to_warehouse_id" int NOT NULL,
 	"createdAt" timestamp DEFAULT now(),
     "updatedAt" timestamp,
-     CONSTRAINT fk_order_barang_warehouse FOREIGN KEY (from_warehouse_id) REFERENCES warehouse(id)
+     CONSTRAINT fk_order_barang_from_warehouse FOREIGN KEY (from_warehouse_id) REFERENCES warehouse(id)
     	ON DELETE CASCADE
     	ON UPDATE CASCADE,
-    CONSTRAINT fk_order_barang_warehouse FOREIGN KEY (to_warehouse_id) REFERENCES warehouse(id)
+    CONSTRAINT fk_order_barang_to_warehouse FOREIGN KEY (to_warehouse_id) REFERENCES warehouse(id)
     	ON DELETE CASCADE
     	ON UPDATE CASCADE
 );
