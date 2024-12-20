@@ -18,7 +18,7 @@ export async function GetAllVehicleMerk() {
 export async function CreateVehicleMerk(data: any) {
     try {
         const checkVehicleMerk: any = await VehicleMerkCheck(data);
-        if (!checkVehicleMerk) {
+        if (checkVehicleMerk) {
             throw ({code: "THROW", message: "Vehicle merk already exist"});
         }
         const dataCreate: VehicleMerk = await VehicleMerkCreate(data);

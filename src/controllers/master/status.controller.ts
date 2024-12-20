@@ -18,7 +18,7 @@ export async function GetAllStatus() {
 export async function CreateStatus(StatusData: StatusCreate) {
     try {
         const checkStatus: any = await StatusCheck(StatusData);
-        if (!checkStatus) {
+        if (checkStatus) {
             throw ({code: "THROW", message: "Status already exist"});
         }
         const dataCreate: Status = await StatusCreate(StatusData);

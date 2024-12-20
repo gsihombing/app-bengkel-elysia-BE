@@ -18,7 +18,7 @@ export async function GetAllVehicleYear() {
 export async function CreateVehicleYear(data: VehicleYearCreate) {
     try {
         const checkVehicleYear: any = await VehicleYearCheck(data);
-        if (!checkVehicleYear) {
+        if (checkVehicleYear) {
             throw ({code: "THROW", message: "Vehicle year already exist"});
         }
         const dataCreate: VehicleYear = await VehicleYearCreate(data);

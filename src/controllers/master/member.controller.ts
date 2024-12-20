@@ -17,7 +17,7 @@ export async function GetAllMember() {
 export async function CreateMember(MemberData: MemberCreate) {
     try {
         const checkMember: any = await MemberCheck(MemberData);
-        if (!checkMember) {
+        if (checkMember) {
             throw ({code: "THROW", message: "Member already exist"});
         }
         const dataCreate: Member = await MemberCreate(MemberData);
