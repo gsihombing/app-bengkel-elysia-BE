@@ -1,6 +1,8 @@
 import { Elysia } from "elysia";
 import { Logestic } from "logestic";
 import routerIndex from "./routers/index";
+import {cron as cronJob} from"@elysiajs/cron";
+import { StatusAll } from "./models/master/status.models";
 
 const app = new Elysia()
 
@@ -8,6 +10,18 @@ const app = new Elysia()
 // app.use(Logestic.preset('common'));
 // app.use(Logestic.preset('commontz'));
 app.use(Logestic.preset('fancy'));
+
+// Cron Job
+app.use(cronJob({
+  name: "cron-job",
+  pattern: "*/10 * * * * *", // run every 10 seconds
+  timezone: "Asia/Jakarta", // timezone
+  run: async () => {
+    const dataAll: Status = await StatusAll(); // contoh menjalankan query
+    console.log(dataAll) // contoh hasil menjalankan query
+    console.log("Cron Job is running! 10 seconds")
+  }
+}));
 
 app.get("/", () => {
   return {
