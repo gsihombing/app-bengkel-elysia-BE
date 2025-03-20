@@ -58,6 +58,7 @@ CREATE TABLE users (
 	"phone_number" varchar(16) NOT NULL,
 	"createdAt" timestamp DEFAULT now(),
     "updatedAt" timestamp,
+	"deletedAt" timestamp,
     CONSTRAINT fk_users_status FOREIGN KEY (status_id) REFERENCES status(id)
     	ON DELETE CASCADE
     	ON UPDATE CASCADE,
