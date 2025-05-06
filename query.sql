@@ -1,41 +1,41 @@
 CREATE TABLE status (
-    "id" serial NOT NULL PRIMARY KEY,
+    "id" varchar(255) NOT NULL PRIMARY KEY,
     "name" varchar(10) NOT NULL,
     "createdAt" timestamp DEFAULT now(),
     "updatedAt" timestamp
 );
 
 CREATE TABLE member (
-	"id" serial NOT NULL PRIMARY KEY,
+	"id" varchar(255) NOT NULL PRIMARY KEY,
 	"name" varchar(20) NOT NULL,
 	"createdAt" timestamp DEFAULT now(),
     "updatedAt" timestamp
 );
 
 CREATE TABLE vehicle_year (
-	"id" serial NOT NULL PRIMARY KEY,
+	"id" varchar(255) NOT NULL PRIMARY KEY,
 	"year" varchar(5) NOT NULL,
 	"createdAt" timestamp DEFAULT now(),
     "updatedAt" timestamp
 );
 
 CREATE TABLE vehicle_merk (
-	"id" serial NOT NULL PRIMARY KEY,
+	"id" varchar(255) NOT NULL PRIMARY KEY,
 	"name" varchar(15) NOT NULL,
 	"createdAt" timestamp DEFAULT now(),
     "updatedAt" timestamp
 );
 
 CREATE TABLE vehicle_category (
-	"id" serial NOT NULL PRIMARY KEY,
+	"id" varchar(255) NOT NULL PRIMARY KEY,
 	"name" varchar(15) NOT NULL,
 	"createdAt" timestamp DEFAULT now(),
     "updatedAt" timestamp
 );
 
 CREATE TABLE vehicle_type (
-	"id" serial NOT NULL PRIMARY KEY,
-	"vehicle_category_id" int NOT NULL,
+	"id" varchar(255) NOT NULL PRIMARY KEY,
+	"vehicle_category_id" varchar(255) NOT NULL,
 	"name" varchar(15) NOT NULL,
 	"createdAt" timestamp DEFAULT now(),
     "updatedAt" timestamp,
@@ -46,11 +46,11 @@ CREATE TABLE vehicle_type (
 
 CREATE TABLE users (
 	"id" varchar(255) NOT NULL PRIMARY KEY,
-	"status_id" int NOT NULL,
-	"member_id" int NOT NULL,
-	"vehicle_year_id" int NOT NULL,
-	"vehicle_merk_id" int NOT NULL,
-	"vehicle_type_id" int NOT NULL,
+	"status_id" varchar(255) NOT NULL,
+	"member_id" varchar(255) NOT NULL,
+	"vehicle_year_id" varchar(255) NOT NULL,
+	"vehicle_merk_id" varchar(255) NOT NULL,
+	"vehicle_type_id" varchar(255) NOT NULL,
 	"no_police" varchar(15) NOT NULL,
 	"name" varchar(255),
 	"point" int DEFAULT 0,
@@ -71,14 +71,14 @@ CREATE TABLE users (
     CONSTRAINT fk_users_vehicle_merk FOREIGN KEY (vehicle_merk_id) REFERENCES vehicle_merk(id)
     	ON DELETE CASCADE
     	ON UPDATE CASCADE,
-    CONSTRAINT fk_vusers_ehicle_type FOREIGN KEY (vehicle_type_id) REFERENCES vehicle_type(id)
+    CONSTRAINT fk_vusers_vehicle_type FOREIGN KEY (vehicle_type_id) REFERENCES vehicle_type(id)
     	ON DELETE CASCADE
     	ON UPDATE CASCADE
 );
 
 CREATE TABLE employee (
 	"id" varchar(255) NOT NULL PRIMARY KEY,
-	"status_id" int NOT NULL,
+	"status_id" varchar(255) NOT NULL,
 	"name" varchar(255) NOT NULL,
 	"point" int DEFAULT 0,
 	"address" TEXT,
@@ -91,15 +91,15 @@ CREATE TABLE employee (
 );
 
 CREATE TABLE level (
-	"id" serial NOT NULL PRIMARY KEY,
+	"id" varchar(255) NOT NULL PRIMARY KEY,
 	"name" varchar(15) NOT NULL,
 	"createdAt" timestamp DEFAULT now(),
     "updatedAt" timestamp
 );
 
 CREATE TABLE warehouse (
-	"id" serial NOT NULL PRIMARY KEY,
-	"level_id" int NOT NULL,
+	"id" varchar(255) NOT NULL PRIMARY KEY,
+	"level_id" varchar(255) NOT NULL,
 	"name_warehouse" varchar(255) NOT NULL,
 	"username" varchar(50) NOT NULL,
 	"password" varchar(255) NOT NULL,
@@ -113,9 +113,9 @@ CREATE TABLE warehouse (
 );
 
 CREATE TABLE mekanik (
-	"id" serial NOT NULL PRIMARY KEY,
+	"id" varchar(255) NOT NULL PRIMARY KEY,
 	"employee_id" varchar(255) NOT NULL,
-	"warehouse_id" int NOT NULL,
+	"warehouse_id" varchar(255) NOT NULL,
 	"createdAt" timestamp DEFAULT now(),
     "updatedAt" timestamp,
 	CONSTRAINT fk_mekanik_employee FOREIGN KEY (employee_id) REFERENCES employee(id)
@@ -127,8 +127,8 @@ CREATE TABLE mekanik (
 );
 
 CREATE TABLE barang (
-	"id" serial NOT NULL PRIMARY KEY,
-	"category_vehicle_id" int NOT NULL,
+	"id" varchar(255) NOT NULL PRIMARY KEY,
+	"category_vehicle_id" varchar(255) NOT NULL,
 	"name_barang" varchar(255) NOT NULL,
 	"description_barang" TEXT,
 	"price" numeric NOT NULL,
@@ -141,9 +141,9 @@ CREATE TABLE barang (
 );
 
 CREATE TABLE warehouse_inventory (
-	"id" serial NOT NULL PRIMARY KEY,
-	"warehouse_id" int NOT NULL,
-	"barang_id" int NOT NULL,
+	"id" varchar(255) NOT NULL PRIMARY KEY,
+	"warehouse_id" varchar(255) NOT NULL,
+	"barang_id" varchar(255) NOT NULL,
 	"qty" int NOT NULL DEFAULT 0,
 	"createdAt" timestamp DEFAULT now(),
     "updatedAt" timestamp,
@@ -156,15 +156,15 @@ CREATE TABLE warehouse_inventory (
 );
 
 CREATE TABLE transaksi (
-	"id" serial NOT NULL PRIMARY KEY,
+	"id" varchar(255) NOT NULL PRIMARY KEY,
 	"users_id" varchar(255) NOT NULL,
-	"mekanik_id" int NOT NULL,
-	"warehouse_id" int NOT NULL,
+	"mekanik_id" varchar(255) NOT NULL,
+	"warehouse_id" varchar(255) NOT NULL,
 	"point" int NOT NULL DEFAULT 0,
 	"total" int,
 	"createdAt" timestamp DEFAULT now(),
     "updatedAt" timestamp,
-     CONSTRAINT fk_transaksi_user FOREIGN KEY (users_id) REFERENCES users(id)
+    CONSTRAINT fk_transaksi_user FOREIGN KEY (users_id) REFERENCES users(id)
     	ON DELETE CASCADE
     	ON UPDATE CASCADE,
     CONSTRAINT fk_transaksi_mekanik FOREIGN KEY (mekanik_id) REFERENCES mekanik(id)
@@ -176,9 +176,9 @@ CREATE TABLE transaksi (
 );
 
 CREATE TABLE transaksi_detail (
-	"id" serial NOT NULL PRIMARY KEY,
-	"transaksi_id" int NOT NULL,
-	"barang_id" int NOT NULL,
+	"id" varchar(255) NOT NULL PRIMARY KEY,
+	"transaksi_id" varchar(255) NOT NULL,
+	"barang_id" varchar(255) NOT NULL,
 	"qty" int NOT NULL,
 	"sub_total" int NOT NULL,
 	"createdAt" timestamp DEFAULT now(),
@@ -192,12 +192,12 @@ CREATE TABLE transaksi_detail (
 );
 
 CREATE TABLE order_barang (
-	"id" serial NOT NULL PRIMARY KEY,
-	"from_warehouse_id" int NOT NULL,
-	"to_warehouse_id" int NOT NULL,
+	"id" varchar(255) NOT NULL PRIMARY KEY,
+	"from_warehouse_id" varchar(255) NOT NULL,
+	"to_warehouse_id" varchar(255) NOT NULL,
 	"createdAt" timestamp DEFAULT now(),
     "updatedAt" timestamp,
-     CONSTRAINT fk_order_barang_from_warehouse FOREIGN KEY (from_warehouse_id) REFERENCES warehouse(id)
+    CONSTRAINT fk_order_barang_from_warehouse FOREIGN KEY (from_warehouse_id) REFERENCES warehouse(id)
     	ON DELETE CASCADE
     	ON UPDATE CASCADE,
     CONSTRAINT fk_order_barang_to_warehouse FOREIGN KEY (to_warehouse_id) REFERENCES warehouse(id)
@@ -206,9 +206,9 @@ CREATE TABLE order_barang (
 );
 
 CREATE TABLE order_barang_detail (
-	"id" serial NOT NULL PRIMARY KEY,
-	"order_barang_id" int NOT NULL,
-	barang_id int NOT NULL,
+	"id" varchar(255) NOT NULL PRIMARY KEY,
+	"order_barang_id" varchar(255) NOT NULL,
+	"barang_id" varchar(255) NOT NULL,
 	"qty" int NOT NULL,
 	"createdAt" timestamp DEFAULT now(),
     "updatedAt" timestamp,
