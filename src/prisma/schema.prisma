@@ -1,0 +1,209 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../src/prisma/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model barang {
+  id                  String                @id @db.VarChar(255)
+  category_vehicle_id String                @db.VarChar(255)
+  name_barang         String                @db.VarChar(255)
+  description_barang  String?
+  price               Decimal               @db.Decimal
+  point               Int?                  @default(0)
+  createdAt           DateTime?             @default(now()) @db.Timestamp(6)
+  updatedAt           DateTime?             @db.Timestamp(6)
+  vehicle_category    vehicle_category      @relation(fields: [category_vehicle_id], references: [id], onDelete: Cascade, map: "fk_barang_vehicle_category")
+  order_barang_detail order_barang_detail[]
+  transaksi_detail    transaksi_detail[]
+  warehouse_inventory warehouse_inventory[]
+}
+
+model employee {
+  id           String    @id @db.VarChar(255)
+  status_id    String    @db.VarChar(255)
+  name         String    @db.VarChar(255)
+  point        Int?      @default(0)
+  address      String?
+  phone_number String?   @db.VarChar(16)
+  createdAt    DateTime? @default(now()) @db.Timestamp(6)
+  updatedAt    DateTime? @db.Timestamp(6)
+  status       status    @relation(fields: [status_id], references: [id], onDelete: Cascade, map: "fk_employee_status")
+  mekanik      mekanik[]
+}
+
+model level {
+  id        String      @id @db.VarChar(255)
+  name      String      @db.VarChar(15)
+  createdAt DateTime?   @default(now()) @db.Timestamp(6)
+  updatedAt DateTime?   @db.Timestamp(6)
+  warehouse warehouse[]
+}
+
+model mekanik {
+  id           String      @id @db.VarChar(255)
+  employee_id  String      @db.VarChar(255)
+  warehouse_id String      @db.VarChar(255)
+  createdAt    DateTime?   @default(now()) @db.Timestamp(6)
+  updatedAt    DateTime?   @db.Timestamp(6)
+  employee     employee    @relation(fields: [employee_id], references: [id], onDelete: Cascade, map: "fk_mekanik_employee")
+  warehouse    warehouse   @relation(fields: [warehouse_id], references: [id], onDelete: Cascade, map: "fk_mekanik_warehouse")
+  transaksi    transaksi[]
+}
+
+model member {
+  id        String    @id @db.VarChar(255)
+  name      String    @db.VarChar(20)
+  createdAt DateTime? @default(now()) @db.Timestamp(6)
+  updatedAt DateTime? @db.Timestamp(6)
+  users     users[]
+}
+
+model order_barang {
+  id                                                  String                @id @db.VarChar(255)
+  from_warehouse_id                                   String                @db.VarChar(255)
+  to_warehouse_id                                     String                @db.VarChar(255)
+  createdAt                                           DateTime?             @default(now()) @db.Timestamp(6)
+  updatedAt                                           DateTime?             @db.Timestamp(6)
+  warehouse_order_barang_from_warehouse_idTowarehouse warehouse             @relation("order_barang_from_warehouse_idTowarehouse", fields: [from_warehouse_id], references: [id], onDelete: Cascade, map: "fk_order_barang_from_warehouse")
+  warehouse_order_barang_to_warehouse_idTowarehouse   warehouse             @relation("order_barang_to_warehouse_idTowarehouse", fields: [to_warehouse_id], references: [id], onDelete: Cascade, map: "fk_order_barang_to_warehouse")
+  order_barang_detail                                 order_barang_detail[]
+}
+
+model order_barang_detail {
+  id              String       @id @db.VarChar(255)
+  order_barang_id String       @db.VarChar(255)
+  barang_id       String       @db.VarChar(255)
+  qty             Int
+  createdAt       DateTime?    @default(now()) @db.Timestamp(6)
+  updatedAt       DateTime?    @db.Timestamp(6)
+  barang          barang       @relation(fields: [barang_id], references: [id], onDelete: Cascade, map: "fk_order_barang_detail_barang")
+  order_barang    order_barang @relation(fields: [order_barang_id], references: [id], onDelete: Cascade, map: "fk_order_barang_detail_transaksi")
+}
+
+model status {
+  id        String     @id @db.VarChar(255)
+  name      String     @db.VarChar(10)
+  createdAt DateTime?  @default(now()) @db.Timestamp(6)
+  updatedAt DateTime?  @db.Timestamp(6)
+  employee  employee[]
+  users     users[]
+}
+
+model transaksi {
+  id               String             @id @db.VarChar(255)
+  users_id         String             @db.VarChar(255)
+  mekanik_id       String             @db.VarChar(255)
+  warehouse_id     String             @db.VarChar(255)
+  point            Int                @default(0)
+  total            Int?
+  createdAt        DateTime?          @default(now()) @db.Timestamp(6)
+  updatedAt        DateTime?          @db.Timestamp(6)
+  mekanik          mekanik            @relation(fields: [mekanik_id], references: [id], onDelete: Cascade, map: "fk_transaksi_mekanik")
+  users            users              @relation(fields: [users_id], references: [id], onDelete: Cascade, map: "fk_transaksi_user")
+  warehouse        warehouse          @relation(fields: [warehouse_id], references: [id], onDelete: Cascade, map: "fk_transaksi_warehouse")
+  transaksi_detail transaksi_detail[]
+}
+
+model transaksi_detail {
+  id           String    @id @db.VarChar(255)
+  transaksi_id String    @db.VarChar(255)
+  barang_id    String    @db.VarChar(255)
+  qty          Int
+  sub_total    Int
+  createdAt    DateTime? @default(now()) @db.Timestamp(6)
+  updatedAt    DateTime? @db.Timestamp(6)
+  barang       barang    @relation(fields: [barang_id], references: [id], onDelete: Cascade, map: "fk_transaksi_detail_barang")
+  transaksi    transaksi @relation(fields: [transaksi_id], references: [id], onDelete: Cascade, map: "fk_transaksi_detail_transaksi")
+}
+
+model users {
+  id              String       @id @db.VarChar(255)
+  status_id       String       @db.VarChar(255)
+  member_id       String       @db.VarChar(255)
+  vehicle_year_id String       @db.VarChar(255)
+  vehicle_merk_id String       @db.VarChar(255)
+  vehicle_type_id String       @db.VarChar(255)
+  no_police       String       @db.VarChar(15)
+  name            String?      @db.VarChar(255)
+  point           Int?         @default(0)
+  address         String?
+  phone_number    String       @db.VarChar(16)
+  createdAt       DateTime?    @default(now()) @db.Timestamp(6)
+  updatedAt       DateTime?    @db.Timestamp(6)
+  deletedAt       DateTime?    @db.Timestamp(6)
+  transaksi       transaksi[]
+  member          member       @relation(fields: [member_id], references: [id], onDelete: Cascade, map: "fk_users_member")
+  status          status       @relation(fields: [status_id], references: [id], onDelete: Cascade, map: "fk_users_status")
+  vehicle_merk    vehicle_merk @relation(fields: [vehicle_merk_id], references: [id], onDelete: Cascade, map: "fk_users_vehicle_merk")
+  vehicle_year    vehicle_year @relation(fields: [vehicle_year_id], references: [id], onDelete: Cascade, map: "fk_users_vehicle_year")
+  vehicle_type    vehicle_type @relation(fields: [vehicle_type_id], references: [id], onDelete: Cascade, map: "fk_vusers_vehicle_type")
+}
+
+model vehicle_category {
+  id           String         @id @db.VarChar(255)
+  name         String         @db.VarChar(15)
+  createdAt    DateTime?      @default(now()) @db.Timestamp(6)
+  updatedAt    DateTime?      @db.Timestamp(6)
+  barang       barang[]
+  vehicle_type vehicle_type[]
+}
+
+model vehicle_merk {
+  id        String    @id @db.VarChar(255)
+  name      String    @db.VarChar(15)
+  createdAt DateTime? @default(now()) @db.Timestamp(6)
+  updatedAt DateTime? @db.Timestamp(6)
+  users     users[]
+}
+
+model vehicle_type {
+  id                  String           @id @db.VarChar(255)
+  vehicle_category_id String           @db.VarChar(255)
+  name                String           @db.VarChar(15)
+  createdAt           DateTime?        @default(now()) @db.Timestamp(6)
+  updatedAt           DateTime?        @db.Timestamp(6)
+  users               users[]
+  vehicle_category    vehicle_category @relation(fields: [vehicle_category_id], references: [id], onDelete: Cascade, map: "fk_vehicle_type_vehicle_category")
+}
+
+model vehicle_year {
+  id        String    @id @db.VarChar(255)
+  year      String    @db.VarChar(5)
+  createdAt DateTime? @default(now()) @db.Timestamp(6)
+  updatedAt DateTime? @db.Timestamp(6)
+  users     users[]
+}
+
+model warehouse {
+  id                                                     String                @id @db.VarChar(255)
+  level_id                                               String                @db.VarChar(255)
+  name_warehouse                                         String                @db.VarChar(255)
+  username                                               String                @db.VarChar(50)
+  password                                               String                @db.VarChar(255)
+  warehouse_address                                      String
+  phone_number_warehouse                                 String?               @db.VarChar(16)
+  createdAt                                              DateTime?             @default(now()) @db.Timestamp(6)
+  updatedAt                                              DateTime?             @db.Timestamp(6)
+  mekanik                                                mekanik[]
+  order_barang_order_barang_from_warehouse_idTowarehouse order_barang[]        @relation("order_barang_from_warehouse_idTowarehouse")
+  order_barang_order_barang_to_warehouse_idTowarehouse   order_barang[]        @relation("order_barang_to_warehouse_idTowarehouse")
+  transaksi                                              transaksi[]
+  level                                                  level                 @relation(fields: [level_id], references: [id], onDelete: Cascade, map: "fk_level_warehouse")
+  warehouse_inventory                                    warehouse_inventory[]
+}
+
+model warehouse_inventory {
+  id           String    @id @db.VarChar(255)
+  warehouse_id String    @db.VarChar(255)
+  barang_id    String    @db.VarChar(255)
+  qty          Int       @default(0)
+  createdAt    DateTime? @default(now()) @db.Timestamp(6)
+  updatedAt    DateTime? @db.Timestamp(6)
+  barang       barang    @relation(fields: [barang_id], references: [id], onDelete: Cascade, map: "fk_warehouse_inventory_barang")
+  warehouse    warehouse @relation(fields: [warehouse_id], references: [id], onDelete: Cascade, map: "fk_warehouse_inventory_warehouse")
+}

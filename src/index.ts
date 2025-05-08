@@ -3,6 +3,7 @@ import { Logestic } from "logestic";
 import routerIndex from "./routers/index";
 import {cron as cronJob} from"@elysiajs/cron";
 import { StatusAll } from "./models/master/status.models";
+import prisma from "./lib/prisma.lib";
 
 const app = new Elysia()
 
@@ -18,7 +19,8 @@ app.use(cronJob({
   timezone: "Asia/Jakarta", // timezone
   run: async () => {
     const dataAll: Status = await StatusAll(); // contoh menjalankan query
-    console.log(dataAll) // contoh hasil menjalankan query
+    const dataAl1l: any = await prisma.status.findMany(); // contoh menjalankan query
+    console.log(dataAl1l, "dari prisma") // contoh hasil menjalankan query
     console.log("Cron Job is running! 10 seconds")
   }
 }));
