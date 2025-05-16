@@ -1,13 +1,9 @@
-import { nanoid } from "nanoid";
 import { outError } from "../../helpers/utils";
-import prisma from "../../lib/prisma.lib";
-
+import { MemberAll, MemberCreate, MemberUpdate, MemberDelete, MemberCheck } from "../../models/master/member.model";
 
 export async function GetAllMember() {
     try {
-        const dataAll: Member[] = await prisma.member.findMany({
-            orderBy: { name: "asc" }
-        });
+        const dataAll: Member = await MemberAll();
         return {
             success: true,
             message: "Success get all member",
@@ -20,22 +16,11 @@ export async function GetAllMember() {
 
 export async function CreateMember(MemberData: MemberCreate) {
     try {
-        const checkMember: Member | null = await prisma.member.findFirst({
-            where: {
-                name: {
-                    contains: MemberData.name
-                }
-            }
-        });
+        const checkMember: any = await MemberCheck(MemberData);
         if (checkMember) {
             throw ({code: "THROW", message: "Member already exist"});
         }
-        const dataCreate: Member = await prisma.member.create({
-            data: {
-                id: nanoid(),
-                name: MemberData.name
-            }
-        });
+        const dataCreate: Member = await MemberCreate(MemberData);
         return {
             success: true,
             message: "Success create member",
@@ -48,10 +33,7 @@ export async function CreateMember(MemberData: MemberCreate) {
 
 export async function UpdateMember(id: TypeId, MemberData: MemberCreate) {
     try {
-        const dataUpdate: Member = await prisma.member.update({
-            where: { id },
-            data: { name: MemberData.name, updatedAt: new Date() }
-        });
+        const dataUpdate: Member = await MemberUpdate(id, MemberData);
         return {
             success: true,
             message: "Success update member",
@@ -64,15 +46,10 @@ export async function UpdateMember(id: TypeId, MemberData: MemberCreate) {
 
 export async function DeleteMember(id: TypeId) {
     try {
-        const checkMember: Member | null = await prisma.member.findFirst({
-            where: { id }
-        });
-        if (!checkMember) {
+        const dataDelete: any = await MemberDelete(id);
+        if (!dataDelete) {
             throw ({code: "THROW", message: "Member not found"});
         }
-        const dataDelete: any = await prisma.member.delete({
-            where: { id }
-        });
         return {
             success: true,
             message: "Success delete member",

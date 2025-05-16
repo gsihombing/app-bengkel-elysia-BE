@@ -1,13 +1,10 @@
-import { nanoid } from "nanoid";
 import { outError } from "../../helpers/utils";
-import prisma from "../../lib/prisma.lib";
+import { VehicleYearAll, VehicleYearCheck, VehicleYearCreate, VehicleYearUpdate, VehicleYearDelete } from "../../models/master/vehicle-year.model";
 
 
 export async function GetAllVehicleYear() {
     try {
-        const dataAll: VehicleYear[] = await prisma.vehicle_year.findMany({
-            orderBy: { year: "asc" }
-        });
+        const dataAll: VehicleYear = await VehicleYearAll();
         return {
             success: true,
             message: "Success get all vehicle year",
@@ -20,22 +17,11 @@ export async function GetAllVehicleYear() {
 
 export async function CreateVehicleYear(data: VehicleYearCreate) {
     try {
-        const checkVehicleYear: any = await prisma.vehicle_year.findFirst({
-            where: {
-                year: {
-                    contains: data.year
-                }
-            }
-        });
+        const checkVehicleYear: any = await VehicleYearCheck(data);
         if (checkVehicleYear) {
             throw ({code: "THROW", message: "Vehicle year already exist"});
         }
-        const dataCreate: VehicleYear = await prisma.vehicle_year.create({
-            data: {
-                id: nanoid(),
-                year: data.year
-            }
-        });
+        const dataCreate: VehicleYear = await VehicleYearCreate(data);
         return {
             success: true,
             message: "Success create vehicle year",
@@ -48,10 +34,7 @@ export async function CreateVehicleYear(data: VehicleYearCreate) {
 
 export async function UpdateVehicleYear(id: TypeId, data: VehicleYearCreate) {
     try {
-        const dataUpdate: VehicleYear = await prisma.vehicle_year.update({
-            where: { id },
-            data: { year: data.year, updatedAt: new Date() }
-        });
+        const dataUpdate: VehicleYear = await VehicleYearUpdate(id, data);
         return {
             success: true,
             message: "Success update vehicle year",
@@ -64,15 +47,10 @@ export async function UpdateVehicleYear(id: TypeId, data: VehicleYearCreate) {
 
 export async function DeleteVehicleYear(id: TypeId) {
     try {
-        const checkVehicleYear: any = await prisma.vehicle_year.findFirst({
-            where: { id }
-        });
-        if (!checkVehicleYear) {
+        const dataDelete: any = await VehicleYearDelete(id);
+        if (!dataDelete) {
             throw ({code: "THROW", message: "Vehicle year not found"});
         }
-        const dataDelete: any = await prisma.vehicle_year.delete({
-            where: { id }
-        });
         return {
             success: true,
             message: "Success delete vehicle year",

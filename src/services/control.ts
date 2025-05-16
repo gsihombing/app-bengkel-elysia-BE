@@ -4,7 +4,7 @@
 // Type
 type Query = string
 type ErrorResponse = any
-type TypeId = unknown
+type TypeId = string | undefined
 type StatusCreate = { name: string }
 type MemberCreate = { name: string }
 type VehicleYearCreate = { year: string }
@@ -18,24 +18,24 @@ type VehicleTypeCreate = {
 
 // interface
 interface Status {
-    id: number,
+    id: string,
     name: string,
-    createdAt: string,
-    updatedAt: string
+    createdAt: Date | null,
+    updatedAt: Date | null
 }
 
 interface Member {
-    id: number,
+    id: string,
     name: string,
-    createdAt: string,
-    updatedAt: string
+    createdAt: Date | null,
+    updatedAt: Date | null
 }
 
 interface VehicleYear {
-    id: number,
+    id: string,
     year: string,
-    createdAt: string,
-    updatedAt: string
+    createdAt: Date | null,
+    updatedAt: Date | null
 }
 
 interface VehicleMerk {
