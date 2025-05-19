@@ -70,7 +70,7 @@ export async function DeleteMember(id: TypeId) {
         if (!checkMember) {
             throw ({code: "THROW", message: "Member not found"});
         }
-        const dataDelete: any = await prisma.member.delete({
+        const dataDelete: Member = await prisma.member.delete({
             where: { id }
         });
         return {

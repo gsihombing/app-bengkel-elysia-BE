@@ -20,7 +20,7 @@ export async function GetAllVehicleYear() {
 
 export async function CreateVehicleYear(data: VehicleYearCreate) {
     try {
-        const checkVehicleYear: any = await prisma.vehicle_year.findFirst({
+        const checkVehicleYear: VehicleYear | null = await prisma.vehicle_year.findFirst({
             where: {
                 year: {
                     contains: data.year
@@ -64,13 +64,13 @@ export async function UpdateVehicleYear(id: TypeId, data: VehicleYearCreate) {
 
 export async function DeleteVehicleYear(id: TypeId) {
     try {
-        const checkVehicleYear: any = await prisma.vehicle_year.findFirst({
+        const checkVehicleYear: VehicleYear | null = await prisma.vehicle_year.findFirst({
             where: { id }
         });
         if (!checkVehicleYear) {
             throw ({code: "THROW", message: "Vehicle year not found"});
         }
-        const dataDelete: any = await prisma.vehicle_year.delete({
+        const dataDelete: VehicleYear = await prisma.vehicle_year.delete({
             where: { id }
         });
         return {

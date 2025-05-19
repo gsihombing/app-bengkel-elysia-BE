@@ -70,7 +70,7 @@ export async function DeleteStatus(id: TypeId) {
         if (!checkStatus) {
             throw ({code: "THROW", message: "Status not found"});
         }
-        const dataDelete: any = await prisma.status.delete({
+        const dataDelete: Status = await prisma.status.delete({
             where: { id }
         });
         return {

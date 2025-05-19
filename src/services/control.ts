@@ -4,14 +4,14 @@
 // Type
 type Query = string
 type ErrorResponse = any
-type TypeId = string | undefined
+type TypeId = string
 type StatusCreate = { name: string }
 type MemberCreate = { name: string }
 type VehicleYearCreate = { year: string }
 type VehicleMerkCreate = { name: string }
 type VehicleCategoryCreate = { name: string }
 type VehicleTypeCreate = { 
-    vehicle_category_id: number,
+    vehicle_category_id: string,
     name: string 
 }
 
@@ -39,31 +39,31 @@ interface VehicleYear {
 }
 
 interface VehicleMerk {
-    id: number,
+    id: string,
     name: string,
-    createdAt: string,
-    updatedAt: string
+    createdAt: Date | null,
+    updatedAt: Date | null
 }
 
 interface VehicleCategory {
-    id: number,
+    id: string,
     name: string,
-    createdAt: string,
-    updatedAt: string
+    createdAt: Date | null,
+    updatedAt: Date | null
 }
 
 interface VehicleAllType {
-    id: number,
+    id: string,
     name: string,
-    metadata: object,
-    createdAt: string,
-    updatedAt: string
+    vehicle_category_id: string,
+    createdAt: Date | null,
+    updatedAt: Date | null
 }
 
 interface VehicleType {
-    id: number,
-    vehicle_category_id: number,
+    id: string,
+    vehicle_category_id: string,
     name: string,
-    createdAt: string,
-    updatedAt: string
+    createdAt: Date | null,
+    updatedAt: Date | null
 }
