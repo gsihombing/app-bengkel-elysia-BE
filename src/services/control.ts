@@ -7,12 +7,34 @@ type ErrorResponse = any
 type TypeId = string
 type StatusCreate = { name: string }
 type MemberCreate = { name: string }
+type LevelCreate = { name: string }
 type VehicleYearCreate = { year: string }
 type VehicleMerkCreate = { name: string }
 type VehicleCategoryCreate = { name: string }
+type QueryParams = any
 type VehicleTypeCreate = { 
     vehicle_category_id: string,
     name: string 
+}
+type EmployeeCreate = { 
+    status_id: string,
+    name: string,
+    point: number | null,
+    address: string | null,
+    phone_number: string | null
+}
+
+type UsersCreate = { 
+    status_id: string,
+    member_id: string,
+    vehicle_year_id: string,
+    vehicle_merk_id: string,
+    vehicle_type_id: string,
+    no_police: string,
+    name: string | null,
+    point: number | null,
+    address: string | null,
+    phone_number: string
 }
 
 
@@ -66,4 +88,39 @@ interface VehicleType {
     name: string,
     createdAt: Date | null,
     updatedAt: Date | null
+}
+
+interface Level {
+    id: string,
+    name: string,
+    createdAt: Date | null,
+    updatedAt: Date | null
+}
+
+interface Employee {
+    id: string,
+    status_id: string,
+    name: string,
+    point: number | null,
+    address: string | null,
+    phone_number: string | null,
+    createdAt: Date | null,
+    updatedAt: Date | null
+}
+
+interface Users {
+    id: string,
+    status_id: string,
+    member_id: string,
+    vehicle_year_id: string,
+    vehicle_merk_id: string,
+    vehicle_type_id: string,
+    no_police: string,
+    name: string | null,
+    point: number | null,
+    address: string | null,
+    phone_number: string,
+    createdAt: Date | null,
+    updatedAt: Date | null,
+    deletedAt: Date | null
 }
