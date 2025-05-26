@@ -1,11 +1,14 @@
+import { nanoid } from "nanoid";
 import { outError } from "../../helpers/utils";
-import { VehicleCategoryAll, VehicleCategoryCheck, VehicleCategoryCreate, VehicleCategoryDelete, VehicleCategoryUpdate } from "../../models/master/vehicle-category.model";
+import prisma from "../../lib/prisma.lib";
 
 
 
 export async function GetAllVehicleCategory() {
     try {
-        const dataAll: VehicleCategory = await VehicleCategoryAll();
+        const dataAll: VehicleCategory[] = await prisma.vehicle_category.findMany({
+            orderBy: { name: "asc" }
+        });
         return {
             success: true,
             message: "Success get all vehicle category",
@@ -18,11 +21,22 @@ export async function GetAllVehicleCategory() {
 
 export async function CreateVehicleCategory(data: any) {
     try {
-        const checkVehicleCategory: any = await VehicleCategoryCheck(data);
+        const checkVehicleCategory: VehicleCategory | null = await prisma.vehicle_category.findFirst({
+            where: {
+                name: {
+                    contains: data.name
+                }
+            }
+        });
         if (checkVehicleCategory) {
             throw ({code: "THROW", message: "Vehicle category already exist"});
         }
-        const dataCreate: VehicleCategory = await VehicleCategoryCreate(data);
+        const dataCreate: VehicleCategory = await prisma.vehicle_category.create({
+            data: {
+                id: nanoid(),
+                name: data.name
+            }
+        });
         return {
             success: true,
             message: "Success create vehicle category",
@@ -33,9 +47,12 @@ export async function CreateVehicleCategory(data: any) {
     }
 }
 
-export async function UpdateVehicleCategory(id: any, data: any) {
+export async function UpdateVehicleCategory(id: TypeId, data: any) {
     try {
-        const dataUpdate: VehicleCategory = await VehicleCategoryUpdate(id, data);
+        const dataUpdate: VehicleCategory = await prisma.vehicle_category.update({
+            where: { id },
+            data: { name: data.name, updatedAt: new Date() }
+        });
         return {
             success: true,
             message: "Success update vehicle category",
@@ -46,12 +63,17 @@ export async function UpdateVehicleCategory(id: any, data: any) {
     }
 }
 
-export async function DeleteVehicleCategory(id: any) {
+export async function DeleteVehicleCategory(id: TypeId) {
     try {
-        const dataDelete: any = await VehicleCategoryDelete(id);
-        if (!dataDelete) {
+        const checkVehicleCategory: VehicleCategory | null = await prisma.vehicle_category.findFirst({
+            where: { id }
+        });
+        if (!checkVehicleCategory) {
             throw ({code: "THROW", message: "Vehicle category not found"});
         }
+        const dataDelete: VehicleCategory = await prisma.vehicle_category.delete({
+            where: { id }
+        });
         return {
             success: true,
             message: "Success delete vehicle category",

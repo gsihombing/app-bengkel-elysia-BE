@@ -1,10 +1,13 @@
+import { nanoid } from "nanoid";
 import { outError } from "../../helpers/utils";
-import { StatusAll, StatusCreate, StatusUpdate, StatusDelete, StatusCheck } from "../../models/master/status.models";
+import prisma from "../../lib/prisma.lib";
 
 
 export async function GetAllStatus() {
     try {
-        const dataAll: Status = await StatusAll();
+        const dataAll: Status[]  = await prisma.status.findMany({
+            orderBy: { name: "asc" }
+        });
         return {
             success: true,
             message: "Success get all status",
@@ -17,11 +20,22 @@ export async function GetAllStatus() {
 
 export async function CreateStatus(StatusData: StatusCreate) {
     try {
-        const checkStatus: any = await StatusCheck(StatusData);
+        const checkStatus: Status | null = await prisma.status.findFirst({
+            where: {
+                name: {
+                    contains: StatusData.name
+                }
+            }
+        });
         if (checkStatus) {
             throw ({code: "THROW", message: "Status already exist"});
         }
-        const dataCreate: Status = await StatusCreate(StatusData);
+        const dataCreate: Status = await prisma.status.create({
+            data: {
+                id: nanoid(),
+                name: StatusData.name
+                }
+        });
         return {
             success: true,
             message: "Success create status",
@@ -34,7 +48,10 @@ export async function CreateStatus(StatusData: StatusCreate) {
 
 export async function UpdateStatus(id: TypeId, StatusData: StatusCreate) {
     try {
-        const dataUpdate: Status = await StatusUpdate(id, StatusData);
+        const dataUpdate: Status = await prisma.status.update({
+            where: { id },
+            data: { name: StatusData.name, updatedAt: new Date() }
+        });
         return {
             success: true,
             message: "Success update status",
@@ -47,10 +64,15 @@ export async function UpdateStatus(id: TypeId, StatusData: StatusCreate) {
 
 export async function DeleteStatus(id: TypeId) {
     try {
-        const dataDelete: any = await StatusDelete(id);
-        if (!dataDelete) {
+        const checkStatus: Status | null = await prisma.status.findFirst({
+            where: { id }
+        });
+        if (!checkStatus) {
             throw ({code: "THROW", message: "Status not found"});
         }
+        const dataDelete: Status = await prisma.status.delete({
+            where: { id }
+        });
         return {
             success: true,
             message: "Success delete status",

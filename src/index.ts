@@ -18,7 +18,6 @@ app.use(cronJob({
   timezone: "Asia/Jakarta", // timezone
   run: async () => {
     const dataAll: Status = await StatusAll(); // contoh menjalankan query
-    console.log(dataAll) // contoh hasil menjalankan query
     console.log("Cron Job is running! 10 seconds")
   }
 }));

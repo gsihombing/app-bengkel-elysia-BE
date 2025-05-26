@@ -7,8 +7,8 @@ const routerVehicleType = new Elysia({prefix: "/vehicle-type"});
 routerVehicleType.get("/", () => GetAllVehicleType());
 routerVehicleType.post("/", ({ body }) => CreateVehicleType(body as VehicleTypeCreate), {
     body: t.Object({
-        vehicle_category_id: t.Numeric({
-            type: "number",
+        vehicle_category_id: t.String({
+            type: "string",
             required: true
         }),
         name: t.String({
@@ -19,8 +19,8 @@ routerVehicleType.post("/", ({ body }) => CreateVehicleType(body as VehicleTypeC
 });
 routerVehicleType.patch("/:id", ({ params: { id }, body }) => UpdateVehicleType(id as TypeId, body as VehicleTypeCreate), {
     body: t.Object({
-        vehicle_category_id: t.Numeric({
-            type: "number",
+        vehicle_category_id: t.String({
+            type: "string",
             required: true
         }),
         name: t.String({
