@@ -11,7 +11,6 @@ export async function GetAllVehicleType() {
             include: {
                 vehicle_category: {
                     select: {
-                        id: true,
                         name: true
                     }
                 }
