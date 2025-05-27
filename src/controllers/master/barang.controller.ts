@@ -93,7 +93,6 @@ export async function UpdateBarang(id: TypeId, barangData: BarangCreate) {
         if (!checkBarang) {
             throw ({ code: "THROW", message: "Barang not found" });
         }
-        console.log(barangData);
         const dataUpdate = await prisma.barang.update({
             where: { id },
             data: {
