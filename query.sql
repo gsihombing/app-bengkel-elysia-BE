@@ -143,14 +143,24 @@ CREATE TABLE barang (
 CREATE TABLE warehouse_inventory (
 	"id" varchar(255) NOT NULL PRIMARY KEY,
 	"warehouse_id" varchar(255) NOT NULL,
-	"barang_id" varchar(255) NOT NULL,
-	"qty" int NOT NULL DEFAULT 0,
 	"createdAt" timestamp DEFAULT now(),
     "updatedAt" timestamp,
     CONSTRAINT fk_warehouse_inventory_warehouse FOREIGN KEY (warehouse_id) REFERENCES warehouse(id)
     	ON DELETE CASCADE
+    	ON UPDATE CASCADE
+);
+
+CREATE TABLE inventory (
+	"id" varchar(255) NOT NULL PRIMARY KEY,
+	"warehouse_inventory_id" varchar(255) NOT NULL,
+	"barang_id" varchar(255) NOT NULL,
+	"qty" int NOT NULL DEFAULT 0,
+	"createdAt" timestamp DEFAULT now(),
+    "updatedAt" timestamp,
+    CONSTRAINT fk_inventory_warehouse_inventory FOREIGN KEY (warehouse_inventory_id) REFERENCES warehouse_inventory(id)
+    	ON DELETE CASCADE
     	ON UPDATE CASCADE,
-    CONSTRAINT fk_warehouse_inventory_barang FOREIGN KEY (barang_id) REFERENCES barang(id)
+    CONSTRAINT fk_inventory_barang FOREIGN KEY (barang_id) REFERENCES barang(id)
     	ON DELETE CASCADE
     	ON UPDATE CASCADE
 );
