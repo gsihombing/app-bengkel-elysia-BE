@@ -9,7 +9,7 @@ import { outPageInfo } from "../../helpers/pageinfo";
 export async function GetAllUsers(query: QueryParams) {
     try {
         const offsetData = (query.page - 1) * query.limit
-        const dataCount: number = await prisma.users.count({
+        const dataCount: CountData = await prisma.users.count({
             where: {
                 no_police: {
                     contains: query.filter,
@@ -34,31 +34,26 @@ export async function GetAllUsers(query: QueryParams) {
             include: {
                 status: {
                     select: {
-                        id: true,
                         name: true
                     }
                 },
                 member: {
                     select: {
-                        id: true,
                         name: true
                     }
                 },
                 vehicle_year: {
                     select: {
-                        id: true,
                         year: true
                     }
                 },
                 vehicle_merk: {
                     select: {
-                        id: true,
                         name: true
                     }
                 },
                 vehicle_type: {
                     select: {
-                        id: true,
                         name: true
                     }
                 }

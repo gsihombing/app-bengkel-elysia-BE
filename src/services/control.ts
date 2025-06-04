@@ -1,10 +1,8 @@
-// This is file for type and interface
-
-
 // Type
 type Query = string
 type ErrorResponse = any
 type TypeId = string
+type CountData = number
 type StatusCreate = { name: string }
 type MemberCreate = { name: string }
 type LevelCreate = { name: string }
@@ -36,6 +34,33 @@ type UsersCreate = {
     address: string | null,
     phone_number: string
 }
+
+type BarangCreate = { 
+    category_vehicle_id: string,
+    name_barang: string,
+    description_barang: string | null,
+    price: any,
+    point: number
+}
+
+type WarehouseCreate = {
+    id: string,
+    level_id: string,
+    name_warehouse: string,
+    username: string,
+    password: string,
+    warehouse_address: string,
+    phone_number_warehouse: string | null
+}
+
+
+
+
+
+
+
+
+
 
 
 // interface
@@ -123,4 +148,27 @@ interface Users {
     createdAt: Date | null,
     updatedAt: Date | null,
     deletedAt: Date | null
+}
+
+interface Barang {
+    id: string,
+    category_vehicle_id: string,
+    name_barang: string,
+    description_barang: string | null,
+    price: any,
+    point: number | null,
+    createdAt: Date | null,
+    updatedAt: Date | null
+}
+
+interface Warehouse {
+    id: string,
+    level_id: string,
+    name_warehouse: string,
+    username: string,
+    password: string,
+    warehouse_address: string | null,
+    phone_number_warehouse: string | null,
+    createdAt: Date | null,
+    updatedAt: Date | null
 }

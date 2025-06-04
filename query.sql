@@ -131,7 +131,7 @@ CREATE TABLE barang (
 	"category_vehicle_id" varchar(255) NOT NULL,
 	"name_barang" varchar(255) NOT NULL,
 	"description_barang" TEXT,
-	"price" numeric NOT NULL,
+	"price" int NOT NULL,
 	"point" int DEFAULT 0,
 	"createdAt" timestamp DEFAULT now(),
     "updatedAt" timestamp,

@@ -7,7 +7,7 @@ import { outPageInfo } from "../../helpers/pageinfo";
 export async function GetAllEmployee(query: QueryParams) {
     try {
         const offsetData = (query.page - 1) * query.limit
-        const dataCount: number = await prisma.employee.count({
+        const dataCount: CountData = await prisma.employee.count({
             where: {
                 name: {
                     contains: query.filter,
@@ -32,7 +32,6 @@ export async function GetAllEmployee(query: QueryParams) {
             include: {
                 status: {
                     select: {
-                        id: true,
                         name: true
                     }
                 }
@@ -86,6 +85,12 @@ export async function CreateEmployee(employeeData: EmployeeCreate) {
 
 export async function UpdateEmployee(id: TypeId, LevelData: EmployeeCreate) {
     try {
+        const checkEmployee: Employee | null = await prisma.employee.findFirst({
+            where: { id }
+        });
+        if (!checkEmployee) {
+            throw ({code: "THROW", message: "Employee not found"});
+        }
         const dataUpdate: Employee = await prisma.employee.update({
             where: { id },
             data: { 
