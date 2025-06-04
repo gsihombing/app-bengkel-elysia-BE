@@ -43,6 +43,16 @@ type BarangCreate = {
     point: number
 }
 
+type WarehouseCreate = {
+    id: string,
+    level_id: string,
+    name_warehouse: string,
+    username: string,
+    password: string,
+    warehouse_address: string,
+    phone_number_warehouse: string | null
+}
+
 
 
 
@@ -147,6 +157,18 @@ interface Barang {
     description_barang: string | null,
     price: any,
     point: number | null,
+    createdAt: Date | null,
+    updatedAt: Date | null
+}
+
+interface Warehouse {
+    id: string,
+    level_id: string,
+    name_warehouse: string,
+    username: string,
+    password: string,
+    warehouse_address: string | null,
+    phone_number_warehouse: string | null,
     createdAt: Date | null,
     updatedAt: Date | null
 }
