@@ -17,7 +17,7 @@ type VehicleTypeCreate = {
 type EmployeeCreate = { 
     status_id: string,
     name: string,
-    point: number | null,
+    point: number,
     address: string | null,
     phone_number: string | null
 }

@@ -31,6 +31,10 @@ routerEmployee.patch("/:id", ({ params: { id }, body }) => UpdateEmployee(id as 
         name: t.String({
             type: "string"
         }),
+        point: t.Numeric({
+            type: "number",
+            required: true
+        }),
         address: t.String({
             type: "string"
         }),
