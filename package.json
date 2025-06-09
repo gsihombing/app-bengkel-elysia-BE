@@ -10,16 +10,16 @@
   },
   "dependencies": {
     "@elysiajs/cron": "^1.3.0",
-    "@prisma/client": "6.7.0",
+    "@prisma/client": "^6.9.0",
     "elysia": "latest",
     "logestic": "^1.2.4",
     "nanoid": "^5.1.5",
-    "pg": "^8.15.6",
-    "preact": "^10.26.6"
+    "pg": "^8.16.0",
+    "preact": "^10.26.8"
   },
   "devDependencies": {
     "bun-types": "latest",
-    "prisma": "^6.7.0"
+    "prisma": "^6.9.0"
   },
   "module": "src/index.js"
 }

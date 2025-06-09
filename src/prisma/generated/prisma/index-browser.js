@@ -20,12 +20,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.7.0
- * Query Engine version: 3cff47a7f5d65c3ea74883f1d736e41d68ce91ed
+ * Prisma Client JS version: 6.9.0
+ * Query Engine version: 81e4af48011447c3cc503a190e86995b66d2a28e
  */
 Prisma.prismaVersion = {
-  client: "6.7.0",
-  engine: "3cff47a7f5d65c3ea74883f1d736e41d68ce91ed"
+  client: "6.9.0",
+  engine: "81e4af48011447c3cc503a190e86995b66d2a28e"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -138,6 +138,15 @@ exports.Prisma.EmployeeScalarFieldEnum = {
   point: 'point',
   address: 'address',
   phone_number: 'phone_number',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.InventoryScalarFieldEnum = {
+  id: 'id',
+  warehouse_inventory_id: 'warehouse_inventory_id',
+  barang_id: 'barang_id',
+  qty: 'qty',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -270,8 +279,6 @@ exports.Prisma.WarehouseScalarFieldEnum = {
 exports.Prisma.Warehouse_inventoryScalarFieldEnum = {
   id: 'id',
   warehouse_id: 'warehouse_id',
-  barang_id: 'barang_id',
-  qty: 'qty',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -295,6 +302,7 @@ exports.Prisma.NullsOrder = {
 exports.Prisma.ModelName = {
   barang: 'barang',
   employee: 'employee',
+  inventory: 'inventory',
   level: 'level',
   mekanik: 'mekanik',
   member: 'member',

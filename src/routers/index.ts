@@ -25,7 +25,7 @@ routerIndex.group("/master", (allRouter) => allRouter.use(routerLevel))
 routerIndex.group("/master", (allRouter) => allRouter.use(routerEmployee))
 routerIndex.group("/master", (allRouter) => allRouter.use(routerUsers))
 routerIndex.group("/master", (allRouter) => allRouter.use(routerBarang))
-routerIndex.group("/master", (allRouter) => allRouter.use(routerWarehouse))
+// routerIndex.group("/master", (allRouter) => allRouter.use(routerWarehouse))
 
 // Admin Router
 // routerIndex.group("/admin", (allRouter) => allRouter.use(routerIndex))
