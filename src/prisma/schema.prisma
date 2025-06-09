@@ -18,9 +18,9 @@ model barang {
   createdAt           DateTime?             @default(now()) @db.Timestamp(6)
   updatedAt           DateTime?             @db.Timestamp(6)
   vehicle_category    vehicle_category      @relation(fields: [category_vehicle_id], references: [id], onDelete: Cascade, map: "fk_barang_vehicle_category")
+  inventory           inventory[]
   order_barang_detail order_barang_detail[]
   transaksi_detail    transaksi_detail[]
-  warehouse_inventory warehouse_inventory[]
 }
 
 model employee {
@@ -34,6 +34,17 @@ model employee {
   updatedAt    DateTime? @db.Timestamp(6)
   status       status    @relation(fields: [status_id], references: [id], onDelete: Cascade, map: "fk_employee_status")
   mekanik      mekanik[]
+}
+
+model inventory {
+  id                     String              @id @db.VarChar(255)
+  warehouse_inventory_id String              @db.VarChar(255)
+  barang_id              String              @db.VarChar(255)
+  qty                    Int                 @default(0)
+  createdAt              DateTime?           @default(now()) @db.Timestamp(6)
+  updatedAt              DateTime?           @db.Timestamp(6)
+  barang                 barang              @relation(fields: [barang_id], references: [id], onDelete: Cascade, map: "fk_inventory_barang")
+  warehouse_inventory    warehouse_inventory @relation(fields: [warehouse_inventory_id], references: [id], onDelete: Cascade, map: "fk_inventory_warehouse_inventory")
 }
 
 model level {
@@ -100,7 +111,7 @@ model transaksi {
   mekanik_id       String             @db.VarChar(255)
   warehouse_id     String             @db.VarChar(255)
   point            Int                @default(0)
-  total            Int?
+  total            Decimal            @db.Decimal
   createdAt        DateTime?          @default(now()) @db.Timestamp(6)
   updatedAt        DateTime?          @db.Timestamp(6)
   mekanik          mekanik            @relation(fields: [mekanik_id], references: [id], onDelete: Cascade, map: "fk_transaksi_mekanik")
@@ -114,7 +125,7 @@ model transaksi_detail {
   transaksi_id String    @db.VarChar(255)
   barang_id    String    @db.VarChar(255)
   qty          Int
-  sub_total    Int
+  sub_total    Decimal   @db.Decimal
   createdAt    DateTime? @default(now()) @db.Timestamp(6)
   updatedAt    DateTime? @db.Timestamp(6)
   barang       barang    @relation(fields: [barang_id], references: [id], onDelete: Cascade, map: "fk_transaksi_detail_barang")
@@ -198,12 +209,10 @@ model warehouse {
 }
 
 model warehouse_inventory {
-  id           String    @id @db.VarChar(255)
-  warehouse_id String    @db.VarChar(255)
-  barang_id    String    @db.VarChar(255)
-  qty          Int       @default(0)
-  createdAt    DateTime? @default(now()) @db.Timestamp(6)
-  updatedAt    DateTime? @db.Timestamp(6)
-  barang       barang    @relation(fields: [barang_id], references: [id], onDelete: Cascade, map: "fk_warehouse_inventory_barang")
-  warehouse    warehouse @relation(fields: [warehouse_id], references: [id], onDelete: Cascade, map: "fk_warehouse_inventory_warehouse")
+  id           String      @id @db.VarChar(255)
+  warehouse_id String      @db.VarChar(255)
+  createdAt    DateTime?   @default(now()) @db.Timestamp(6)
+  updatedAt    DateTime?   @db.Timestamp(6)
+  inventory    inventory[]
+  warehouse    warehouse   @relation(fields: [warehouse_id], references: [id], onDelete: Cascade, map: "fk_warehouse_inventory_warehouse")
 }
