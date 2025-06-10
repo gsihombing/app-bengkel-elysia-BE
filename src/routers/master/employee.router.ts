@@ -20,6 +20,9 @@ routerEmployee.post("/", ({ body }) => CreateEmployee(body as EmployeeCreate), {
         }),
         phone_number: t.String({
             type: "string"
+        }),
+        warehouse_id: t.String({
+            type: "string"
         })
     })
 });
@@ -39,6 +42,9 @@ routerEmployee.patch("/:id", ({ params: { id }, body }) => UpdateEmployee(id as 
             type: "string"
         }),
         phone_number: t.String({
+            type: "string"
+        }),
+        warehouse_id: t.String({
             type: "string"
         })
     })
