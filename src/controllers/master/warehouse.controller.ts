@@ -34,6 +34,18 @@ export async function GetAllWarehouse(query: QueryParams) {
                     select: {
                         name: true
                     }  
+                },
+                warehouse_inventory: {
+                    include: {
+                        inventory: {
+                            select: {
+                                id: true,
+                                barang_id: true,
+                                qty: true,
+                                barang: true
+                            }
+                        }
+                    }
                 }
             }
         });
@@ -61,9 +73,12 @@ export async function CreateWarehouse(warehouseData: WarehouseCreate) {
                 }
             }
         });
-
-        const createData = await prisma.$transaction(async (tx) => {
-            const createWarehouse = await tx.warehouse.create({
+        if (checkWarehouse) {
+            throw ({ code: "THROW", message: "Warehouse already exists" });
+        }
+        // Query Transaction START
+        const result = await prisma.$transaction(async (tx) => {
+            const createWarehose = await tx.warehouse.create({
                 data: {
                     id: nanoid(),
                     level_id: warehouseData.level_id,
@@ -74,25 +89,60 @@ export async function CreateWarehouse(warehouseData: WarehouseCreate) {
                     phone_number_warehouse: warehouseData.phone_number_warehouse
                 }
             });
-
-            // const createinventory = await tx.inventory.create({
-            return createWarehouse;
+            await tx.warehouse_inventory.create({
+                data: {
+                    id: nanoid(),
+                    warehouse_id: createWarehose.id
+                }
+            });
+            return createWarehose;
         })
-        // if (checkWarehouse) {
-        //     throw ({ code: "THROW", message: "Warehouse already exists" });
-        // }
-        // const dataCreate = await prisma.warehouse.create({
-        //     data: {
-        //         level_id: warehouseData.level_id,
-        //         name_warehouse: warehouseData.name_warehouse
-        //     }
-        // });
+        // Query Transaction END
         return {
             success: true,
             message: "Success create warehouse",
-            results: checkWarehouse
+            results: result
         };
     } catch (error: ErrorResponse) {
         return outError(error);
     }
 }
+
+export async function UpdateWarehouse(id: TypeId, warehouseData: WarehouseCreate) {
+    try {
+        const checkWarehouse: Warehouse | null = await prisma.warehouse.findFirst({
+            where: {
+                id: id,
+                name_warehouse: {
+                    startsWith: warehouseData.name_warehouse,
+                    endsWith: warehouseData.name_warehouse,
+                    contains: warehouseData.name_warehouse,
+                    mode: "insensitive"
+                }
+            }
+        });
+        if (!checkWarehouse) {
+            throw ({ code: "THROW", message: "Warehouse not found" });
+        }
+        const dataUpdate: Warehouse = await prisma.warehouse.update({
+            where: { id },
+            data: {
+                level_id: warehouseData.level_id,
+                name_warehouse: warehouseData.name_warehouse,
+                username: warehouseData.username,
+                password: warehouseData.password,
+                warehouse_address: warehouseData.warehouse_address,
+                phone_number_warehouse: warehouseData.phone_number_warehouse,
+                updatedAt: new Date()
+            }
+        });
+        return {
+            success: true,
+            message: "Success update warehouse",
+            results: dataUpdate
+        };
+    } catch (error: ErrorResponse) {
+        return outError(error);
+    }
+}
+

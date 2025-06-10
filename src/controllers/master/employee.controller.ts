@@ -34,6 +34,19 @@ export async function GetAllEmployee(query: QueryParams) {
                     select: {
                         name: true
                     }
+                },
+                mekanik: {
+                    select: {
+                        id: true,
+                        warehouse_id: true,
+                        warehouse: {
+                            select: {
+                                name_warehouse: true,
+                                warehouse_address: true,
+                                phone_number_warehouse: true
+                            }
+                        }
+                    }
                 }
             }
         });
@@ -63,20 +76,32 @@ export async function CreateEmployee(employeeData: EmployeeCreate) {
         if (checkEmployee) {
             throw ({code: "THROW", message: "Employee already exist"});
         }
-        const dataCreate: Employee = await prisma.employee.create({
-            data: {
-                id: nanoid(),
-                status_id: employeeData.status_id,
-                name: employeeData.name,
-                point: 0,
-                address: employeeData.address,
-                phone_number: employeeData.phone_number
+        // Query Transaction START
+        const result = await prisma.$transaction(async (tx) => {
+            const dataCreate = await tx.employee.create({
+                data: {
+                    id: nanoid(),
+                    status_id: employeeData.status_id,
+                    name: employeeData.name,
+                    point: 0,
+                    address: employeeData.address,
+                    phone_number: employeeData.phone_number
                 }
+            });
+            await tx.mekanik.create({
+                data: {
+                    id: nanoid(),
+                    employee_id: dataCreate.id,
+                    warehouse_id: employeeData.warehouse_id
+                }
+            });
+            return dataCreate;
         });
+        // Query Transaction END
         return {
             success: true,
             message: "Success create level",
-            results: dataCreate
+            results: result
         };
     } catch (error: ErrorResponse) {
         return outError(error);
@@ -91,20 +116,30 @@ export async function UpdateEmployee(id: TypeId, LevelData: EmployeeCreate) {
         if (!checkEmployee) {
             throw ({code: "THROW", message: "Employee not found"});
         }
-        const dataUpdate: Employee = await prisma.employee.update({
-            where: { id },
-            data: { 
-                status_id: LevelData.status_id,
-                name: LevelData.name,
-                point: LevelData.point,
-                address: LevelData.address,
-                phone_number: LevelData.phone_number,
-                updatedAt: new Date() }
-        });
+        // Query Transaction START
+        const result = await prisma.$transaction(async (tx) => {
+            const dataUpdate = await tx.employee.update({
+                where: { id },
+                data: { 
+                    status_id: LevelData.status_id,
+                    name: LevelData.name,
+                    point: LevelData.point,
+                    address: LevelData.address,
+                    phone_number: LevelData.phone_number,
+                    updatedAt: new Date() 
+                }
+            });
+            await tx.mekanik.updateMany({
+                where: { employee_id: id },
+                data: { warehouse_id: LevelData.warehouse_id }
+            });
+            return dataUpdate;
+        })
+        // Query Transaction END
         return {
             success: true,
             message: "Success update level",
-            results: dataUpdate
+            results: result
         };
     } catch (error: ErrorResponse) {
         return outError(error);

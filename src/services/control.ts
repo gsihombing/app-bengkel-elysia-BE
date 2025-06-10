@@ -19,7 +19,8 @@ type EmployeeCreate = {
     name: string,
     point: number,
     address: string | null,
-    phone_number: string | null
+    phone_number: string | null,
+    warehouse_id: string
 }
 
 type UsersCreate = { 
@@ -44,7 +45,6 @@ type BarangCreate = {
 }
 
 type WarehouseCreate = {
-    id: string,
     level_id: string,
     name_warehouse: string,
     username: string,
