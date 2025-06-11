@@ -129,10 +129,19 @@ export async function UpdateEmployee(id: TypeId, LevelData: EmployeeCreate) {
                     updatedAt: new Date() 
                 }
             });
-            await tx.mekanik.updateMany({
+            const dataUpdateMekanik = await tx.mekanik.updateMany({
                 where: { employee_id: id },
                 data: { warehouse_id: LevelData.warehouse_id }
             });
+            if (dataUpdateMekanik.count === 0) {
+                await tx.mekanik.create({
+                    data: {
+                        id: nanoid(),
+                        employee_id: dataUpdate.id,
+                        warehouse_id: LevelData.warehouse_id
+                    }
+                });
+            }
             return dataUpdate;
         })
         // Query Transaction END
