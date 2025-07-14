@@ -2,6 +2,7 @@ import { nanoid } from "nanoid";
 import { outPageInfo } from "../../helpers/pageinfo";
 import { outError } from "../../helpers/utils";
 import prisma from "../../lib/prisma.lib";
+import argon from "argon2";
 
 
 export async function GetAllWarehouse(query: QueryParams) {
@@ -29,7 +30,12 @@ export async function GetAllWarehouse(query: QueryParams) {
                     mode: "insensitive"
                 }
             },
-            include: {
+            select: {
+                id: true,
+                name_warehouse: true,
+                username: true,
+                warehouse_address: true,
+                phone_number_warehouse: true,
                 level: {
                     select: {
                         name: true
@@ -42,7 +48,19 @@ export async function GetAllWarehouse(query: QueryParams) {
                                 id: true,
                                 barang_id: true,
                                 qty: true,
-                                barang: true
+                                barang: {
+                                    select: {
+                                        name_barang: true,
+                                        description_barang: true,
+                                        price: true,
+                                        point: true,
+                                        vehicle_category: {
+                                            select: {
+                                                name: true
+                                            }
+                                        },
+                                    }
+                                }
                             }
                         }
                     }
@@ -76,6 +94,9 @@ export async function CreateWarehouse(warehouseData: WarehouseCreate) {
         if (checkWarehouse) {
             throw ({ code: "THROW", message: "Warehouse already exists" });
         }
+        const salt = (process.env.SALT+"-"+warehouseData.password+"-"+process.env.SALT);
+        const encryptPassword = await argon.hash(salt);
+        // console.log(salt.split("-")[1]);
         // Query Transaction START
         const result = await prisma.$transaction(async (tx) => {
             const createWarehose = await tx.warehouse.create({
@@ -84,7 +105,7 @@ export async function CreateWarehouse(warehouseData: WarehouseCreate) {
                     level_id: warehouseData.level_id,
                     name_warehouse: warehouseData.name_warehouse,
                     username: warehouseData.username,
-                    password: warehouseData.password,
+                    password: encryptPassword,
                     warehouse_address: warehouseData.warehouse_address,
                     phone_number_warehouse: warehouseData.phone_number_warehouse
                 }
@@ -124,13 +145,15 @@ export async function UpdateWarehouse(id: TypeId, warehouseData: WarehouseCreate
         if (!checkWarehouse) {
             throw ({ code: "THROW", message: "Warehouse not found" });
         }
+        const salt = (process.env.SALT+"-"+warehouseData.password+"-"+process.env.SALT);
+        const encryptPassword = await argon.hash(salt);
         const dataUpdate: Warehouse = await prisma.warehouse.update({
             where: { id },
             data: {
                 level_id: warehouseData.level_id,
                 name_warehouse: warehouseData.name_warehouse,
                 username: warehouseData.username,
-                password: warehouseData.password,
+                password: encryptPassword,
                 warehouse_address: warehouseData.warehouse_address,
                 phone_number_warehouse: warehouseData.phone_number_warehouse,
                 updatedAt: new Date()

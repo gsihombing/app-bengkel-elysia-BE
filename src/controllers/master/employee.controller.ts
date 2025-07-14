@@ -29,7 +29,12 @@ export async function GetAllEmployee(query: QueryParams) {
                     mode: "insensitive"
                 }
             },
-            include: {
+            select: {
+                id: true,
+                name: true,
+                point: true,
+                address: true,
+                phone_number: true,
                 status: {
                     select: {
                         name: true

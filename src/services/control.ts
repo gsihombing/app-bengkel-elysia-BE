@@ -124,30 +124,19 @@ interface Level {
 
 interface Employee {
     id: string,
-    status_id: string,
     name: string,
     point: number | null,
     address: string | null,
-    phone_number: string | null,
-    createdAt: Date | null,
-    updatedAt: Date | null
+    phone_number: string | null
 }
 
 interface Users {
     id: string,
-    status_id: string,
-    member_id: string,
-    vehicle_year_id: string,
-    vehicle_merk_id: string,
-    vehicle_type_id: string,
     no_police: string,
     name: string | null,
     point: number | null,
     address: string | null,
     phone_number: string,
-    createdAt: Date | null,
-    updatedAt: Date | null,
-    deletedAt: Date | null
 }
 
 interface Barang {
@@ -163,12 +152,17 @@ interface Barang {
 
 interface Warehouse {
     id: string,
-    level_id: string,
     name_warehouse: string,
     username: string,
-    password: string,
+    warehouse_address: string | null,
+    phone_number_warehouse: string | null
+}
+
+interface Dashboard {
+    id: string,
+    name_warehouse: string,
+    username: string,
     warehouse_address: string | null,
     phone_number_warehouse: string | null,
-    createdAt: Date | null,
-    updatedAt: Date | null
+    warehouse_inventory: any
 }
